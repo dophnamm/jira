@@ -27,7 +27,11 @@ import {
 
 import DottedSeparator from "@/components/DottedSeparator";
 
+import { useSignUp } from "../../api/useSignUp";
+
 const SignUpCard = () => {
+  const { mutate } = useSignUp();
+
   const formInstance = useForm<TSignUpForm>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -38,7 +42,7 @@ const SignUpCard = () => {
   });
 
   const handleOnSubmit = (values: TSignUpForm) => {
-    console.log(values);
+    mutate({ json: values });
   };
 
   return (
