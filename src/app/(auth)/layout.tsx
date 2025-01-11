@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 
+import { routes } from "@/utils";
+
 interface IProps {
   children?: React.ReactNode;
 }
@@ -15,7 +17,7 @@ const AuthLayout = (props: IProps) => {
   const { children } = props;
 
   const pathname = usePathname();
-  const isSignUp = pathname === "/sign-up";
+  const isSignUp = pathname === routes.signUp;
 
   return (
     <main className="bg-neutral-200 min-h-screen">
@@ -24,7 +26,7 @@ const AuthLayout = (props: IProps) => {
           <Image src="/logo.svg" width="84" height="100" alt="Logo" priority />
 
           <Button asChild variant="secondary">
-            <Link href={isSignUp ? "/sign-in" : "/sign-up"}>
+            <Link href={isSignUp ? routes.signIn : routes.signUp}>
               {isSignUp ? "Login" : "Sign Up"}
             </Link>
           </Button>
