@@ -7,7 +7,9 @@ import { SignInSchema, SignUpSchema } from "@/models";
 
 import { createAdminClient } from "@/lib/appwrite";
 
-import { LOGIN_API, LOGOUT_API, REGISTER_API } from "@/utils";
+import { sessionMiddleware } from "@/middleware/session";
+
+import { LOGIN_API, LOGOUT_API, REGISTER_API, CURRENT_USER_API } from "@/utils";
 
 import { AUTH_COOKIES, cookieOptions } from "../utils/constants";
 
@@ -34,10 +36,18 @@ const app = new Hono()
 
     return c.json({ success: true });
   })
-  .post(LOGOUT_API, (c) => {
+  .post(LOGOUT_API, sessionMiddleware, async (c) => {
+    const account = c.get("account");
+
     deleteCookie(c, AUTH_COOKIES);
+    await account.deleteSession("current");
 
     return c.json({ success: true });
+  })
+  .get(CURRENT_USER_API, sessionMiddleware, (c) => {
+    const user = c.get("user");
+
+    return c.json(user);
   });
 
 export default app;
