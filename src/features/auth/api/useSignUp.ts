@@ -1,16 +1,17 @@
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferResponseType, InferRequestType } from "hono";
 
 import { client } from "@/lib/rpc";
 
-import { routes } from "@/utils";
+import { QUERY_CURRENT_USER_KEY } from "./useCurrentUser";
 
 type TResponseType = InferResponseType<(typeof client.api.register)["$post"]>;
 type TRequestType = InferRequestType<(typeof client.api.register)["$post"]>;
 
 export const useSignUp = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation<TResponseType, Error, TRequestType>({
     mutationFn: async ({ json }) => {
@@ -19,7 +20,8 @@ export const useSignUp = () => {
       return await response.json();
     },
     onSuccess: () => {
-      router.push(routes.signIn);
+      router.refresh();
+      queryClient.invalidateQueries({ queryKey: [QUERY_CURRENT_USER_KEY] });
     },
   });
 

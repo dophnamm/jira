@@ -1,10 +1,15 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import React from "react";
-
+import { getCurrentUser } from "@/features/auth/actions";
 import SignInCard from "@/features/auth/components/SignInCard";
 
-const SignIn = () => {
+import { routes } from "@/utils";
+
+const SignIn = async () => {
+  const user = await getCurrentUser();
+
+  if (user) redirect(routes.home);
+
   return (
     <div>
       <SignInCard />
