@@ -9,4 +9,7 @@ export const routes = {
   home: "/",
   signIn: "/sign-in",
   signUp: "/sign-up",
+  tasks: "/tasks",
+  settings: "/settings",
+  members: "/members",
 };
