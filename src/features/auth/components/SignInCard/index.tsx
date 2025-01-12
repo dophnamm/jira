@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+import { Loader } from "lucide-react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -29,7 +33,9 @@ import DottedSeparator from "@/components/DottedSeparator";
 import { useSignIn } from "../../api/useSignIn";
 
 const SignInCard = () => {
-  const { mutate } = useSignIn();
+  const { mutateAsync, isPending } = useSignIn();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const formInstance = useForm<TSignInForm>({
     resolver: zodResolver(SignInSchema),
@@ -39,8 +45,10 @@ const SignInCard = () => {
     },
   });
 
-  const handleOnSubmit = (values: TSignInForm) => {
-    mutate({ json: values });
+  const handleOnSubmit = async (values: TSignInForm) => {
+    setIsLoading(true);
+    await mutateAsync({ json: values });
+    setIsLoading(false);
   };
 
   return (
@@ -68,6 +76,7 @@ const SignInCard = () => {
                     <FormControl>
                       <Input
                         {...field}
+                        disabled={isPending}
                         type="email"
                         placeholder="Enter your email"
                       />
@@ -88,6 +97,7 @@ const SignInCard = () => {
                     <FormControl>
                       <Input
                         {...field}
+                        disabled={isPending}
                         type="password"
                         placeholder="Enter your password"
                         min={8}
@@ -102,7 +112,11 @@ const SignInCard = () => {
             />
 
             <Button type="submit" size="lg" className="w-full" disabled={false}>
-              Login
+              {!isLoading ? (
+                "Login"
+              ) : (
+                <Loader className="size-4 animate-spin text-muted-foreground" />
+              )}
             </Button>
           </form>
         </Form>
@@ -113,12 +127,23 @@ const SignInCard = () => {
       </div>
 
       <CardContent className="p-7 flex flex-col gap-y-4">
-        <Button disabled={false} variant="outline" size="lg" className="w-full">
+        <Button
+          disabled={isPending}
+          variant="outline"
+          size="lg"
+          className="w-full"
+        >
           <FcGoogle className="!size-5" />
           Login with Google
         </Button>
 
-        <Button disabled={false} variant="outline" size="lg" className="w-full">
+        <Button
+          type="submit"
+          disabled={isPending}
+          variant="outline"
+          size="lg"
+          className="w-full"
+        >
           <FaGithub className="!size-5" />
           Login with Github
         </Button>

@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -131,7 +132,7 @@ const SignUpCard = () => {
             />
 
             <Button size="lg" className="w-full" disabled={false}>
-              Sign up
+              Register
             </Button>
           </form>
         </Form>

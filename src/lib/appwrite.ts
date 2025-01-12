@@ -1,4 +1,10 @@
-import { Client, Account } from "node-appwrite";
+"use server";
+
+import { Client, Account, OAuthProvider } from "node-appwrite";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+import { routes } from "@/utils";
 
 export const createAdminClient = async () => {
   const client = new Client()
@@ -11,4 +17,18 @@ export const createAdminClient = async () => {
       return new Account(client);
     },
   };
+};
+
+export const signInWithGithub = async () => {
+  const { account } = await createAdminClient();
+
+  const origin = headers().get("origin");
+
+  const redirectUrl = await account.createOAuth2Token(
+    OAuthProvider.Github,
+    `${origin}${routes.home}`,
+    `${origin}${routes.signUp}`
+  );
+
+  return redirect(redirectUrl);
 };
