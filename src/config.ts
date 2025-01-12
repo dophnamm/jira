@@ -1,0 +1,6 @@
+export const BFF_URL = process.env.NEXT_PUBLIC_BFF_URL;
+export const APPWRITE_KEY = process.env.NEXT_APPWRITE_KEY;
+export const APPWRITE_ENDPOINT = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
+export const APPWRITE_PROJECT = process.env.NEXT_PUBLIC_APPWRITE_PROJECT;
+export const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID;
+export const WORKSPACES_ID = process.env.NEXT_PUBLIC_APPWRITE_WORKSPACES_ID;

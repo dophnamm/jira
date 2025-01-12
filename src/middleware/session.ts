@@ -11,11 +11,12 @@ import {
   type Storage as StorageType,
   type Users as UsersType,
 } from "node-appwrite";
-
 import { getCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 
 import { AUTH_COOKIES } from "@/features/auth/utils/constants";
+
+import { APPWRITE_ENDPOINT, APPWRITE_PROJECT } from "@/config";
 
 export type AdditionalContext = {
   Variables: {
@@ -30,8 +31,8 @@ export type AdditionalContext = {
 export const sessionMiddleware = createMiddleware<AdditionalContext>(
   async (c, next) => {
     const client = new Client()
-      .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
-      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT);
+      .setEndpoint(APPWRITE_ENDPOINT)
+      .setProject(APPWRITE_PROJECT);
 
     const session = getCookie(c, AUTH_COOKIES);
 
