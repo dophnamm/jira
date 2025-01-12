@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { Loader } from "lucide-react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -28,14 +26,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import Spinner from "@/components/Spinner";
 import DottedSeparator from "@/components/DottedSeparator";
 
 import { useSignIn } from "../../api/useSignIn";
 
 const SignInCard = () => {
-  const { mutateAsync, isPending } = useSignIn();
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { mutate, isPending } = useSignIn();
 
   const formInstance = useForm<TSignInForm>({
     resolver: zodResolver(SignInSchema),
@@ -45,10 +42,8 @@ const SignInCard = () => {
     },
   });
 
-  const handleOnSubmit = async (values: TSignInForm) => {
-    setIsLoading(true);
-    await mutateAsync({ json: values });
-    setIsLoading(false);
+  const handleOnSubmit = (values: TSignInForm) => {
+    mutate({ json: values });
   };
 
   return (
@@ -112,11 +107,7 @@ const SignInCard = () => {
             />
 
             <Button type="submit" size="lg" className="w-full" disabled={false}>
-              {!isLoading ? (
-                "Login"
-              ) : (
-                <Loader className="size-4 animate-spin text-muted-foreground" />
-              )}
+              {!isPending ? "Login" : <Spinner />}
             </Button>
           </form>
         </Form>

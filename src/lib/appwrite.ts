@@ -6,11 +6,13 @@ import { redirect } from "next/navigation";
 
 import { routes } from "@/utils";
 
+import { APPWRITE_ENDPOINT, APPWRITE_KEY, APPWRITE_PROJECT } from "@/config";
+
 export const createAdminClient = async () => {
   const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT)
-    .setKey(process.env.NEXT_APPWRITE_KEY);
+    .setEndpoint(APPWRITE_ENDPOINT)
+    .setProject(APPWRITE_PROJECT)
+    .setKey(APPWRITE_KEY);
 
   return {
     get account() {

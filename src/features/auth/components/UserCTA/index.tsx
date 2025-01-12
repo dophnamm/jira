@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import Spinner from "@/components/Spinner";
 import DottedSeparator from "@/components/DottedSeparator";
 
 import { useLogout } from "../../api/useLogout";
@@ -25,7 +26,7 @@ const UserCTA = () => {
   if (isLoading || isLogoutLoading)
     return (
       <div className="size-10 rounded-full flex items-center justify-center bg-neutral-200 border border-neutral-300">
-        <Loader className="size-4 animate-spin text-muted-foreground" />
+        <Spinner />
       </div>
     );
 

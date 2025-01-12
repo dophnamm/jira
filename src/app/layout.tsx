@@ -3,6 +3,7 @@ import { Readex_Pro } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 
+import { Toaster } from "@/components/ui/sonner";
 import ReactQueryProvider from "@/components/common/ReactQueryProvider";
 
 import "./globals.css";
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(readexPro.className, "antialiased min-h-screen")}>
+        <Toaster />
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
