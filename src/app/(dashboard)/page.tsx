@@ -10,8 +10,6 @@ const Home = async () => {
 
   if (!user) redirect(routes.signIn);
 
-  const handleOnCancel = () => {};
-
   return (
     <div className="bg-muted p-4">
       <CreateWorkspaceForm />

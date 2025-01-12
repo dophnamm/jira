@@ -1,5 +1,8 @@
 "use client";
 
+import { useRef } from "react";
+import Image from "next/image";
+import { ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -14,6 +17,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Card, CardTitle, CardContent, CardHeader } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -21,7 +25,6 @@ import Spinner from "@/components/Spinner";
 import DottedSeparator from "@/components/DottedSeparator";
 
 import { useCreateWorkspace } from "../../api/useCreateWorkspace";
-import { useEffect } from "react";
 
 interface IProps {
   onCancel?: () => void;
@@ -30,21 +33,38 @@ interface IProps {
 const CreateWorkspaceForm = (props: IProps) => {
   const { onCancel } = props;
 
-  const { mutate, isPending, isSuccess } = useCreateWorkspace();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const { mutate, isPending } = useCreateWorkspace();
 
   const formInstance = useForm<TCreateWorkspacesSchema>({
     resolver: zodResolver(CreateWorkspaceSchema),
     defaultValues: {
       name: "",
+      image: "",
     },
   });
 
-  useEffect(() => {
-    if (isSuccess) formInstance.reset();
-  }, [isSuccess]);
-
   const handleOnSubmit = (values: TCreateWorkspacesSchema) => {
-    mutate({ json: values });
+    const form = {
+      ...values,
+      image: values.image instanceof File ? values.image : "",
+    };
+
+    mutate(
+      { form },
+      {
+        onSuccess: () => {
+          formInstance.reset();
+        },
+      }
+    );
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target?.files?.[0];
+
+    if (file) formInstance.setValue("image", file);
   };
 
   return (
@@ -61,7 +81,7 @@ const CreateWorkspaceForm = (props: IProps) => {
         <CardContent className="p-7">
           <Form {...formInstance}>
             <form onSubmit={formInstance.handleSubmit(handleOnSubmit)}>
-              <div>
+              <div className="flex flex-col gap-y-4">
                 <FormField
                   control={formInstance.control}
                   name="name"
@@ -80,6 +100,65 @@ const CreateWorkspaceForm = (props: IProps) => {
 
                         <FormMessage />
                       </FormItem>
+                    );
+                  }}
+                />
+
+                <FormField
+                  control={formInstance.control}
+                  name="image"
+                  render={({ field }) => {
+                    return (
+                      <div className="flex flex-col gap-y-2">
+                        <div className="flex items-center gap-x-5">
+                          {field.value ? (
+                            <div className="size-[72px] relative rounded-md overflow-hidden">
+                              <Image
+                                src={
+                                  field.value instanceof File
+                                    ? URL.createObjectURL(field.value)
+                                    : field.value
+                                }
+                                fill
+                                className="object-cover"
+                                alt="image"
+                              />
+                            </div>
+                          ) : (
+                            <Avatar className="size-[72px]">
+                              <AvatarFallback>
+                                <ImageIcon className="size-9 text-neutral-400" />
+                              </AvatarFallback>
+                            </Avatar>
+                          )}
+
+                          <div className="flex flex-col">
+                            <p className="text-sm">Workspace Icon</p>
+                            <p className="text-sm text-muted-foreground">
+                              JPG, JPEG, PNG or SVG max 1MB
+                            </p>
+
+                            <input
+                              type="file"
+                              accept=".jpg, .jpeg, .png, .svg"
+                              className="hidden"
+                              ref={inputRef}
+                              disabled={isPending}
+                              onChange={handleImageChange}
+                            />
+
+                            <Button
+                              type="button"
+                              variant="teritary"
+                              size="xs"
+                              className="w-fit mt-2"
+                              onClick={() => inputRef.current?.click()}
+                            >
+                              Upload Image
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
                     );
                   }}
                 />

@@ -10,7 +10,13 @@ const Sidebar = () => {
   return (
     <aside className="h-full bg-neutral-100 p-4 w-full">
       <Link href={routes.home}>
-        <Image src="/logo.svg" alt="logo" width={64} height={48} />
+        <Image
+          src="/logo.svg"
+          alt="logo"
+          width={64}
+          height={48}
+          className="mx-auto"
+        />
       </Link>
 
       <DottedSeparator className="my-4" />
