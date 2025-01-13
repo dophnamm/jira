@@ -1,23 +1,48 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { Models } from "node-appwrite";
 
-import { CreateWorkspaceSchema, IWorkspaces } from "@/models";
+import {
+  CreateWorkspaceSchema,
+  EMemberRole,
+  IMember,
+  IWorkspaces,
+} from "@/models";
 
 import { sessionMiddleware } from "@/middleware/session";
 
-import { WORKSPACES_API } from "@/utils";
+import { generateInviteCode, WORKSPACES_API } from "@/utils";
 
-import { DATABASE_ID, IMAGES_BUCKET_ID, WORKSPACES_ID } from "@/config";
+import {
+  DATABASE_ID,
+  IMAGES_BUCKET_ID,
+  MEMBERS_ID,
+  WORKSPACES_ID,
+} from "@/config";
 
 const app = new Hono()
   .get(WORKSPACES_API, sessionMiddleware, async (c) => {
+    const user = c.get("user");
     const databases = c.get("databases");
+
+    const members = (await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
+      Query.equal("userId", user.$id),
+    ])) as Models.DocumentList<Models.Document & IMember>;
+
+    if (members.total === 0) {
+      return c.json<Models.DocumentList<Models.Document>>({
+        documents: [],
+        total: 0,
+      });
+    }
+
+    const workspaceIds = members.documents.map((m) => m.workspaceId);
 
     const workspaces = (await databases.listDocuments(
       DATABASE_ID,
-      WORKSPACES_ID
+      WORKSPACES_ID,
+      [Query.contains("$id", workspaceIds), Query.orderDesc("$createdAt")]
     )) as Models.DocumentList<Models.Document & IWorkspaces>;
 
     return c.json(workspaces);
@@ -60,8 +85,15 @@ const app = new Hono()
           name,
           userId: user.$id,
           imageUrl: uploadedImageUrl,
+          inviteCode: generateInviteCode(10),
         } as IWorkspaces
       );
+
+      await databases.createDocument(DATABASE_ID, MEMBERS_ID, ID.unique(), {
+        userId: user.$id,
+        workspaceId: workspace.$id,
+        role: EMemberRole.ADMIN,
+      });
 
       return c.json(workspace);
     }
