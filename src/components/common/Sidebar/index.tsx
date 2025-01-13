@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import WorkspaceSwitcher from "@/components/WorkspaceSwitcher";
+
 import { routes } from "@/utils";
 
 import DottedSeparator from "../../DottedSeparator";
@@ -18,6 +20,10 @@ const Sidebar = () => {
           className="mx-auto"
         />
       </Link>
+
+      <DottedSeparator className="my-4" />
+
+      <WorkspaceSwitcher />
 
       <DottedSeparator className="my-4" />
 
