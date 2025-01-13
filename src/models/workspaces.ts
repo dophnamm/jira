@@ -16,4 +16,5 @@ export interface IWorkspaces {
   name: string;
   userId: string;
   imageUrl?: string;
+  inviteCode: string;
 }
