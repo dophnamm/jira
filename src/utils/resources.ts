@@ -16,4 +16,6 @@ export const routes = {
   tasks: "/tasks",
   settings: "/settings",
   members: "/members",
+  workspaces: "/workspaces",
+  workspaceDetail: "/workspaces/:id",
 };

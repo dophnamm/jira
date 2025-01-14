@@ -1,20 +1,23 @@
 import { redirect } from "next/navigation";
+import urlcat from "urlcat";
 
 import { getCurrentUser } from "@/features/auth/actions";
+import { getWorkspaces } from "@/features/workspaces/actions";
 
 import { routes } from "@/utils";
-import CreateWorkspaceForm from "@/features/workspaces/components/CreateWorkspaceForm";
 
 const Home = async () => {
   const user = await getCurrentUser();
+  const workspaces = await getWorkspaces();
 
   if (!user) redirect(routes.signIn);
-
-  return (
-    <div className="bg-muted p-4">
-      <CreateWorkspaceForm />
-    </div>
-  );
+  if (workspaces?.total === 0) {
+    redirect(routes.workspaces);
+  } else {
+    redirect(
+      urlcat(routes.workspaceDetail, { id: workspaces?.documents[0].$id })
+    );
+  }
 };
 
 export default Home;
