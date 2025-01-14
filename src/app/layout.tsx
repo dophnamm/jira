@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Readex_Pro } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { cn } from "@/lib/utils";
 
@@ -27,7 +28,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(readexPro.className, "antialiased min-h-screen")}>
         <Toaster />
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </ReactQueryProvider>
       </body>
     </html>
   );

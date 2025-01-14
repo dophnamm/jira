@@ -77,7 +77,7 @@ const app = new Hono()
         ).toString("base64")}`;
       }
 
-      const workspace = await databases.createDocument(
+      const workspace = (await databases.createDocument(
         DATABASE_ID,
         WORKSPACES_ID,
         ID.unique(),
@@ -87,7 +87,7 @@ const app = new Hono()
           imageUrl: uploadedImageUrl,
           inviteCode: generateInviteCode(10),
         } as IWorkspaces
-      );
+      )) as Models.Document & IWorkspaces;
 
       await databases.createDocument(DATABASE_ID, MEMBERS_ID, ID.unique(), {
         userId: user.$id,
