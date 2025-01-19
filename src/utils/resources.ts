@@ -8,6 +8,7 @@ export const CURRENT_USER_API = "/current-user";
 
 // Workspaces
 export const WORKSPACES_API = "/workspaces";
+export const WORKSPACES_DETAIL_API = "/workspaces/:id";
 
 export const routes = {
   home: "/",
