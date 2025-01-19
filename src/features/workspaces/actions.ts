@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { Account, Client, Databases, Models, Query } from "node-appwrite";
 
-import { IMember, IWorkspaces } from "@/models";
+import { IMember, IWorkspace } from "@/models";
 
 import { AUTH_COOKIES } from "@/features/auth/utils/constants";
 
@@ -12,6 +12,8 @@ import {
   MEMBERS_ID,
   WORKSPACES_ID,
 } from "@/config";
+
+import { getMember } from "../members/utils/functions";
 
 export const getWorkspaces = async () => {
   const defaultValues = {
@@ -48,10 +50,46 @@ export const getWorkspaces = async () => {
       DATABASE_ID,
       WORKSPACES_ID,
       [Query.contains("$id", workspaceIds), Query.orderDesc("$createdAt")]
-    )) as Models.DocumentList<Models.Document & IWorkspaces>;
+    )) as Models.DocumentList<Models.Document & IWorkspace>;
 
     return workspaces;
   } catch {
     return defaultValues;
+  }
+};
+
+export const getWorkspace = async (id: string) => {
+  try {
+    const client = new Client()
+      .setEndpoint(APPWRITE_ENDPOINT)
+      .setProject(APPWRITE_PROJECT);
+
+    const session = await cookies().get(AUTH_COOKIES);
+
+    if (!session) return null;
+
+    client.setSession(session.value);
+
+    const databases = new Databases(client);
+    const account = new Account(client);
+    const user = await account.get();
+
+    const member = await getMember({
+      databases,
+      workspaceId: id,
+      userId: user.$id,
+    });
+
+    if (!member) return null;
+
+    const workspace = (await databases.getDocument(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      id
+    )) as Models.Document & IWorkspace;
+
+    return workspace;
+  } catch {
+    return null;
   }
 };

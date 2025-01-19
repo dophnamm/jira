@@ -12,7 +12,11 @@ export const CreateWorkspaceSchema = z.object({
 
 export type TCreateWorkspacesSchema = z.infer<typeof CreateWorkspaceSchema>;
 
-export interface IWorkspaces {
+export const UpdateWorkspaceSchema = CreateWorkspaceSchema;
+
+export type TUpdateWorkspacesSchema = z.infer<typeof UpdateWorkspaceSchema>;
+
+export interface IWorkspace {
   name: string;
   userId: string;
   imageUrl?: string;

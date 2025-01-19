@@ -1,11 +1,23 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
+import { getCurrentUser } from "@/features/auth/actions";
 
-const WorkspaceDetail = () => {
-  const workspaceId = useWorkspaceId();
+import { routes } from "@/utils";
 
-  return <div>WorkspaceDetail - {workspaceId}</div>;
+interface IProps {
+  params: {
+    id: string;
+  };
+}
+
+const WorkspaceDetail = async (props: IProps) => {
+  const { params } = props;
+
+  const user = await getCurrentUser();
+
+  if (!user) redirect(routes.signIn);
+
+  return <div>WorkspaceDetail - {params.id}</div>;
 };
 
 export default WorkspaceDetail;

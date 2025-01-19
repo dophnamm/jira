@@ -7,19 +7,23 @@ import {
   CreateWorkspaceSchema,
   EMemberRole,
   IMember,
-  IWorkspaces,
+  IWorkspace,
+  UpdateWorkspaceSchema,
 } from "@/models";
 
 import { sessionMiddleware } from "@/middleware/session";
 
-import { generateInviteCode, WORKSPACES_API } from "@/utils";
-
 import {
-  DATABASE_ID,
-  IMAGES_BUCKET_ID,
-  MEMBERS_ID,
-  WORKSPACES_ID,
-} from "@/config";
+  generateInviteCode,
+  WORKSPACES_API,
+  WORKSPACES_DETAIL_API,
+} from "@/utils";
+
+import { getMember } from "@/features/members/utils/functions";
+
+import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
+
+import { getImage } from "../utils/functions";
 
 const app = new Hono()
   .get(WORKSPACES_API, sessionMiddleware, async (c) => {
@@ -43,7 +47,7 @@ const app = new Hono()
       DATABASE_ID,
       WORKSPACES_ID,
       [Query.contains("$id", workspaceIds), Query.orderDesc("$createdAt")]
-    )) as Models.DocumentList<Models.Document & IWorkspaces>;
+    )) as Models.DocumentList<Models.Document & IWorkspace>;
 
     return c.json(workspaces);
   })
@@ -58,24 +62,7 @@ const app = new Hono()
 
       const { name, image } = c.req.valid("form");
 
-      let uploadedImageUrl: string | undefined;
-
-      if (image instanceof File) {
-        const file = await storage.createFile(
-          IMAGES_BUCKET_ID,
-          ID.unique(),
-          image
-        );
-
-        const arrayBuffer = await storage.getFilePreview(
-          IMAGES_BUCKET_ID,
-          file.$id
-        );
-
-        uploadedImageUrl = `data:image/png;base64,${Buffer.from(
-          arrayBuffer
-        ).toString("base64")}`;
-      }
+      const uploadedImageUrl = await getImage({ storage, image });
 
       const workspace = (await databases.createDocument(
         DATABASE_ID,
@@ -86,14 +73,51 @@ const app = new Hono()
           userId: user.$id,
           imageUrl: uploadedImageUrl,
           inviteCode: generateInviteCode(10),
-        } as IWorkspaces
-      )) as Models.Document & IWorkspaces;
+        } as IWorkspace
+      )) as Models.Document & IWorkspace;
 
       await databases.createDocument(DATABASE_ID, MEMBERS_ID, ID.unique(), {
         userId: user.$id,
         workspaceId: workspace.$id,
         role: EMemberRole.ADMIN,
       });
+
+      return c.json(workspace);
+    }
+  )
+  .patch(
+    WORKSPACES_DETAIL_API,
+    sessionMiddleware,
+    zValidator("form", UpdateWorkspaceSchema),
+    async (c) => {
+      const databases = c.get("databases");
+      const storage = c.get("storage");
+      const user = c.get("user");
+
+      const { id } = c.req.param();
+      const { name, image } = c.req.valid("form");
+
+      const member = await getMember({
+        databases,
+        workspaceId: id,
+        userId: user.$id,
+      });
+
+      if (!member || member.role !== EMemberRole.ADMIN) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const uploadedImageUrl = await getImage({ storage, image });
+
+      const workspace = await databases.updateDocument(
+        DATABASE_ID,
+        WORKSPACES_ID,
+        id,
+        {
+          name,
+          imageUrl: uploadedImageUrl,
+        } as IWorkspace
+      );
 
       return c.json(workspace);
     }
