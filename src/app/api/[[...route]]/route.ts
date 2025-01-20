@@ -12,8 +12,7 @@ app.get("/health-check", (c) => {
   return c.json({ messages: "Ok" });
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const routes = app.route("", auth).route("", workspaces);
+export const routes = app.route("", auth).route("", workspaces);
 
 export const GET = handle(app);
 export const POST = handle(app);

@@ -85,6 +85,28 @@ const app = new Hono()
       return c.json(workspace);
     }
   )
+  .get(WORKSPACES_DETAIL_API, sessionMiddleware, async (c) => {
+    const user = c.get("user");
+    const databases = c.get("databases");
+
+    const { id } = c.req.param();
+
+    const member = await getMember({
+      databases,
+      workspaceId: id,
+      userId: user.$id,
+    });
+
+    if (!member) return c.json(null);
+
+    const workspace = (await databases.getDocument(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      id
+    )) as Models.Document & IWorkspace;
+
+    return c.json(workspace);
+  })
   .patch(
     WORKSPACES_DETAIL_API,
     sessionMiddleware,
