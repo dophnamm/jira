@@ -4,7 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from "@/lib/rpc";
 
-import { QUERY_WORKSPACE_KEY, QUERY_WORKSPACES_KEY } from "./useGetWorkspaces";
+import { QUERY_WORKSPACES_KEY } from "./useGetWorkspaces";
+import { QUERY_WORKSPACE_KEY } from "./useGetWorkspace";
 
 type TResponseType = InferResponseType<
   (typeof client.api.workspaces)[":id"]["$patch"],

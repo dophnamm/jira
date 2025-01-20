@@ -2,6 +2,7 @@ import { useMemo, useRef } from "react";
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
+import { IoClose } from "react-icons/io5";
 
 import { TCreateWorkspacesSchema, TUpdateWorkspacesSchema } from "@/models";
 
@@ -86,6 +87,17 @@ const WorkspaceForm = (props: IProps) => {
                           className="object-cover"
                           alt="image"
                         />
+
+                        <Button
+                          variant="ghost"
+                          className="p-1 h-fit absolute z-5 right-0 top-0"
+                          onClick={() => {
+                            field.onChange(null);
+                            if (inputRef.current) inputRef.current.value = "";
+                          }}
+                        >
+                          <IoClose />
+                        </Button>
                       </div>
                     ) : (
                       <Avatar className="size-[72px]">
