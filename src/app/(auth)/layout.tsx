@@ -20,7 +20,7 @@ const AuthLayout = (props: IProps) => {
   const isSignUp = pathname === routes.signUp;
 
   return (
-    <main className="bg-neutral-200 min-h-screen">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-screen-2xl p-4">
         <nav className="flex justify-between items-center">
           <Image src="/logo.svg" width="84" height="100" alt="Logo" priority />

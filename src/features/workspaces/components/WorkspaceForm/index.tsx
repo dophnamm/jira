@@ -144,7 +144,6 @@ const WorkspaceForm = (props: IProps) => {
         <div className="flex items-center justify-end gap-4">
           <Button
             type="button"
-            size="lg"
             variant="outline"
             onClick={onCancel}
             disabled={isPending}
@@ -152,7 +151,7 @@ const WorkspaceForm = (props: IProps) => {
             Cancel
           </Button>
 
-          <Button type="submit" size="lg" disabled={isPending}>
+          <Button type="submit" disabled={isPending}>
             {!isPending ? buttonText : <Spinner />}
           </Button>
         </div>
