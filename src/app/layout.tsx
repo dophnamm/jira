@@ -26,7 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(readexPro.className, "antialiased min-h-screen")}>
+      <body
+        className={cn(
+          readexPro.className,
+          "antialiased min-h-screen bg-neutral-50"
+        )}
+      >
         <Toaster />
         <ReactQueryProvider>
           <NuqsAdapter>{children}</NuqsAdapter>

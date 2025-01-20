@@ -63,7 +63,11 @@ const WorkspaceSwitcher = () => {
           {!isEmpty(data?.documents) ? (
             data?.documents.map((workspace) => {
               return (
-                <SelectItem key={workspace.$id} value={workspace.$id}>
+                <SelectItem
+                  key={workspace.$id}
+                  value={workspace.$id}
+                  className="cursor-pointer"
+                >
                   <div className="flex justify-start items-center gap-3 font-medium">
                     <WorkspaceAvatar
                       name={workspace.name}
