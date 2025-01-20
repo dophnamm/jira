@@ -1,10 +1,13 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaAngleLeft } from "react-icons/fa6";
 import urlcat from "urlcat";
+import { CopyIcon } from "lucide-react";
+import { toast } from "sonner";
 
 import {
   IWorkspace,
@@ -12,6 +15,7 @@ import {
   UpdateWorkspaceSchema,
 } from "@/models";
 
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,10 +30,11 @@ import DottedSeparator from "@/components/DottedSeparator";
 
 import { useConfirmModal } from "@/hooks/useConfirmModal";
 
-import { routes } from "@/utils";
+import { routes, WORKSPACE_INVITE_URL } from "@/utils";
 
 import { useUpdateWorkspace } from "../../api/useUpdateWorkspace";
 import { useDeleteWorkspace } from "../../api/useDeleteWorkspace";
+import { useResetInviteCode } from "../../api/useResetInviteCode";
 
 import WorkspaceForm from "../WorkspaceForm";
 
@@ -41,10 +46,20 @@ interface IProps {
 const UpdateWorkspaceForm = (props: IProps) => {
   const { defaultValues, workspaceId } = props;
 
+  const [origin, setOrigin] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setOrigin(window.location.origin);
+    }
+  }, []);
+
   const router = useRouter();
   const { mutate: updateWorkspace, isPending } = useUpdateWorkspace();
   const { mutate: deleteWorkspace, isPending: isPendingDelete } =
     useDeleteWorkspace();
+  const { mutate: resetInviteCode, isPending: isPendingResetInviteCode } =
+    useResetInviteCode();
 
   const [contextModal, onConfirm] = useConfirmModal({
     title: `Delete ${defaultValues.name}?`,
@@ -59,6 +74,13 @@ const UpdateWorkspaceForm = (props: IProps) => {
       image: defaultValues.imageUrl ?? "",
     },
   });
+
+  const inviteLink = useMemo(() => {
+    return urlcat(origin, WORKSPACE_INVITE_URL, {
+      id: workspaceId,
+      inviteCode: defaultValues.inviteCode,
+    });
+  }, [defaultValues.inviteCode, workspaceId, origin]);
 
   const handleOnSubmit = (values: TUpdateWorkspacesSchema) => {
     const form = {
@@ -98,6 +120,23 @@ const UpdateWorkspaceForm = (props: IProps) => {
     );
   };
 
+  const handleCopyInviteLink = () => {
+    navigator.clipboard.writeText(inviteLink).then(() => {
+      toast.success("Invite link copied to clipboard!");
+    });
+  };
+
+  const handleOnResetInviteCode = () => {
+    resetInviteCode(
+      { param: { id: workspaceId } },
+      {
+        onSuccess: () => {
+          router.refresh();
+        },
+      }
+    );
+  };
+
   return (
     <>
       {contextModal}
@@ -132,6 +171,40 @@ const UpdateWorkspaceForm = (props: IProps) => {
 
         <Card className="w-full h-full border-none shadow-none">
           <CardHeader className="flex flex-col p-7">
+            <CardTitle className="text-xl font-bold">Invite members</CardTitle>
+
+            <CardDescription>
+              Use the invite link to add members to your workspace.
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="flex flex-col gap-y-7">
+            <DottedSeparator />
+
+            <div className="flex gap-2">
+              <Input disabled value={inviteLink} />
+
+              <Button
+                variant="outline"
+                className="size-12"
+                onClick={handleCopyInviteLink}
+              >
+                <CopyIcon className="size-5" />
+              </Button>
+            </div>
+
+            <DottedSeparator />
+
+            <div className="text-right">
+              <Button onClick={handleOnResetInviteCode}>
+                {!isPendingResetInviteCode ? "Reset Invite Code" : <Spinner />}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="w-full h-full border-none shadow-none">
+          <CardHeader className="flex flex-col p-7">
             <CardTitle className="text-xl font-bold">Danger zone</CardTitle>
 
             <CardDescription>
@@ -139,6 +212,10 @@ const UpdateWorkspaceForm = (props: IProps) => {
               associated data.
             </CardDescription>
           </CardHeader>
+
+          <div className="px-7">
+            <DottedSeparator />
+          </div>
 
           <CardContent className="text-right p-7">
             <Button variant="destructive" onClick={handleOnConfirmDelete}>
