@@ -17,6 +17,7 @@ import {
   generateInviteCode,
   WORKSPACES_API,
   WORKSPACES_DETAIL_API,
+  WORKSPACES_RESET_INVITE_CODE_API,
 } from "@/utils";
 
 import { getMember } from "@/features/members/utils/functions";
@@ -165,6 +166,33 @@ const app = new Hono()
     await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, id);
 
     return c.json({ $id: id });
+  })
+  .post(WORKSPACES_RESET_INVITE_CODE_API, sessionMiddleware, async (c) => {
+    const databases = c.get("databases");
+    const user = c.get("user");
+
+    const { id } = c.req.param();
+
+    const member = await getMember({
+      databases,
+      workspaceId: id,
+      userId: user.$id,
+    });
+
+    if (!member || member.role !== EMemberRole.ADMIN) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const workspace = await databases.updateDocument(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      id,
+      {
+        inviteCode: generateInviteCode(10),
+      } as Pick<IWorkspace, "inviteCode">
+    );
+
+    return c.json(workspace);
   });
 
 export default app;
