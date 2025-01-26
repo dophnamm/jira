@@ -30,7 +30,7 @@ import DottedSeparator from "@/components/DottedSeparator";
 
 import { useConfirmModal } from "@/hooks/useConfirmModal";
 
-import { routes, WORKSPACE_INVITE_URL } from "@/utils";
+import { routes } from "@/utils";
 
 import { useUpdateWorkspace } from "../../api/useUpdateWorkspace";
 import { useDeleteWorkspace } from "../../api/useDeleteWorkspace";
@@ -76,7 +76,7 @@ const UpdateWorkspaceForm = (props: IProps) => {
   });
 
   const inviteLink = useMemo(() => {
-    return urlcat(origin, WORKSPACE_INVITE_URL, {
+    return urlcat(origin, routes.workspaceInviteCode, {
       id: workspaceId,
       inviteCode: defaultValues.inviteCode,
     });

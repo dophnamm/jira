@@ -13,9 +13,6 @@ export const WORKSPACES_RESET_INVITE_CODE_API =
   "/workspaces/:id/reset-invite-code";
 export const WORKSPACES_JOIN = "/workspaces/:id/join";
 
-// Invite URL
-export const WORKSPACE_INVITE_URL = "/workspaces/:id/join/:inviteCode";
-
 export const routes = {
   home: "/",
   signIn: "/sign-in",
@@ -25,4 +22,5 @@ export const routes = {
   members: "/members",
   workspaces: "/workspaces",
   workspaceDetail: "/workspaces/:id",
+  workspaceInviteCode: "/workspaces/:id/join/:inviteCode",
 };
