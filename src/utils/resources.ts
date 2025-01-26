@@ -11,6 +11,7 @@ export const WORKSPACES_API = "/workspaces";
 export const WORKSPACES_DETAIL_API = "/workspaces/:id";
 export const WORKSPACES_RESET_INVITE_CODE_API =
   "/workspaces/:id/reset-invite-code";
+export const WORKSPACES_JOIN = "/workspaces/:id/join";
 
 // Invite URL
 export const WORKSPACE_INVITE_URL = "/workspaces/:id/join/:inviteCode";

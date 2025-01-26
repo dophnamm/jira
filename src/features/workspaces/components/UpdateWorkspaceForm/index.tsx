@@ -196,7 +196,7 @@ const UpdateWorkspaceForm = (props: IProps) => {
             <DottedSeparator />
 
             <div className="text-right">
-              <Button onClick={handleOnResetInviteCode}>
+              <Button type="button" onClick={handleOnResetInviteCode}>
                 {!isPendingResetInviteCode ? "Reset Invite Code" : <Spinner />}
               </Button>
             </div>

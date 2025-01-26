@@ -1,6 +1,6 @@
 import { Models, Query } from "node-appwrite";
 
-import { IMember, IWorkspace } from "@/models";
+import { IMember, IWorkspace, IWorkspaceInfo } from "@/models";
 
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 
@@ -62,6 +62,26 @@ export const getWorkspace = async (id: string) => {
     )) as Models.Document & IWorkspace;
 
     return workspace;
+  } catch {
+    return null;
+  }
+};
+
+export const getWorkspaceInfo = async (
+  id: string
+): Promise<IWorkspaceInfo | null> => {
+  try {
+    const { databases } = await createSessionClient();
+
+    const workspace = (await databases.getDocument(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      id
+    )) as Models.Document & IWorkspace;
+
+    return {
+      name: workspace.name,
+    };
   } catch {
     return null;
   }
