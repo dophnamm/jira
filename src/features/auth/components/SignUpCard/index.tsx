@@ -26,12 +26,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import Spinner from "@/components/Spinner";
 import DottedSeparator from "@/components/DottedSeparator";
 
 import { useSignUp } from "../../api/useSignUp";
 
 const SignUpCard = () => {
-  const { mutate } = useSignUp();
+  const { mutate, isPending } = useSignUp();
 
   const formInstance = useForm<TSignUpForm>({
     resolver: zodResolver(SignUpSchema),
@@ -132,7 +133,7 @@ const SignUpCard = () => {
             />
 
             <Button size="lg" className="w-full" disabled={false}>
-              Register
+              {!isPending ? "Register" : <Spinner />}
             </Button>
           </form>
         </Form>

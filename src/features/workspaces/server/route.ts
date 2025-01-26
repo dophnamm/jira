@@ -8,6 +8,7 @@ import {
   EMemberRole,
   IMember,
   IWorkspace,
+  JoinWorkspaceSchema,
   UpdateWorkspaceSchema,
 } from "@/models";
 
@@ -17,6 +18,7 @@ import {
   generateInviteCode,
   WORKSPACES_API,
   WORKSPACES_DETAIL_API,
+  WORKSPACES_JOIN,
   WORKSPACES_RESET_INVITE_CODE_API,
 } from "@/utils";
 
@@ -193,6 +195,46 @@ const app = new Hono()
     );
 
     return c.json(workspace);
-  });
+  })
+  .post(
+    WORKSPACES_JOIN,
+    sessionMiddleware,
+    zValidator("json", JoinWorkspaceSchema),
+    async (c) => {
+      const { id } = c.req.param();
+      const { inviteCode } = c.req.valid("json");
+
+      const databases = c.get("databases");
+      const user = c.get("user");
+
+      const member = await getMember({
+        workspaceId: id,
+        databases,
+        userId: user.$id,
+      });
+
+      if (member) {
+        return c.json({ error: "Already a member" }, 400);
+      }
+
+      const workspace = (await databases.getDocument(
+        DATABASE_ID,
+        WORKSPACES_ID,
+        id
+      )) as Models.Document & IWorkspace;
+
+      if (workspace.inviteCode !== inviteCode) {
+        return c.json({ error: "Invalid invite code" }, 400);
+      }
+
+      await databases.createDocument(DATABASE_ID, MEMBERS_ID, ID.unique(), {
+        userId: user.$id,
+        workspaceId: workspace.$id,
+        role: EMemberRole.MEMBER,
+      });
+
+      return c.json(workspace);
+    }
+  );
 
 export default app;
