@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar as AvatarComp, AvatarFallback } from "@/components/ui/avatar";
 
 interface IProps {
   image?: string;
@@ -10,7 +10,7 @@ interface IProps {
   className?: string;
 }
 
-const WorkspaceAvatar = (props: IProps) => {
+const Avatar = (props: IProps) => {
   const { image, name, className } = props;
 
   if (image) {
@@ -24,12 +24,12 @@ const WorkspaceAvatar = (props: IProps) => {
   }
 
   return (
-    <Avatar className={cn("size-8", className)}>
+    <AvatarComp className={cn("size-8", className)}>
       <AvatarFallback className="text-white bg-blue-100 font-semibold text-lg uppercase">
         {name[0]}
       </AvatarFallback>
-    </Avatar>
+    </AvatarComp>
   );
 };
 
-export default WorkspaceAvatar;
+export default Avatar;

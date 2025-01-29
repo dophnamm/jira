@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export enum EMemberRole {
   ADMIN = "ADMIN",
   MEMBER = "MEMBER",
@@ -8,3 +10,13 @@ export interface IMember {
   workspaceId: string;
   role: EMemberRole;
 }
+
+export const QueryMembers = z.object({ workspaceId: z.string() });
+
+export type TQueryMembers = z.infer<typeof QueryMembers>;
+
+export const UpdateMemberRoleSchema = z.object({
+  role: z.nativeEnum(EMemberRole),
+});
+
+export type TUpdateMemberRole = z.infer<typeof UpdateMemberRoleSchema>;
