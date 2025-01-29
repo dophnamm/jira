@@ -12,7 +12,6 @@ import {
 } from "@/features/workspaces/api/useGetWorkspaces";
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 import { useCreateWorkspaceModal } from "@/features/workspaces/hooks/useCreateWorkspaceModal";
-import WorkspaceAvatar from "@/features/workspaces/components/WorkspaceAvatar";
 
 import {
   Select,
@@ -26,6 +25,7 @@ import { routes } from "@/utils";
 
 import Empty from "../Empty";
 import Spinner from "../Spinner";
+import Avatar from "../Avatar";
 
 const WorkspaceSwitcher = () => {
   const router = useRouter();
@@ -69,10 +69,7 @@ const WorkspaceSwitcher = () => {
                   className="cursor-pointer"
                 >
                   <div className="flex justify-start items-center gap-3 font-medium">
-                    <WorkspaceAvatar
-                      name={workspace.name}
-                      image={workspace.imageUrl}
-                    />
+                    <Avatar name={workspace.name} image={workspace.imageUrl} />
 
                     <span className="truncate">{workspace.name}</span>
                   </div>

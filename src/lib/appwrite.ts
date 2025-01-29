@@ -1,6 +1,12 @@
 import "server-only";
 
-import { Client, Account, OAuthProvider, Databases } from "node-appwrite";
+import {
+  Client,
+  Account,
+  OAuthProvider,
+  Databases,
+  Users,
+} from "node-appwrite";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -43,6 +49,9 @@ export const createAdminClient = async () => {
   return {
     get account() {
       return new Account(client);
+    },
+    get users() {
+      return new Users(client);
     },
   };
 };
