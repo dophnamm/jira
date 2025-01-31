@@ -53,8 +53,8 @@ const Navigation = () => {
           <Link href={fullHref} key={item.href}>
             <div
               className={cn(
-                "flex items-center gap-2.5 p-2.5 font-medium hover:text-primary transition text-neutral-500",
-                isActive && "bg-white shadow-sm hover:opacity-100 text-primary"
+                "flex items-center gap-2.5 p-2.5 font-medium hover:text-primary transition text-neutral-500 rounded-md",
+                isActive && "bg-white hover:opacity-100 text-primary"
               )}
             >
               <Icon className="size-5 text-neutral-500" />

@@ -24,9 +24,9 @@ import {
 
 import { getMember } from "@/features/members/utils/functions";
 
-import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
+import { getImage } from "@/utils";
 
-import { getImage } from "../utils/functions";
+import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 
 const app = new Hono()
   .get(WORKSPACES_API, sessionMiddleware, async (c) => {
