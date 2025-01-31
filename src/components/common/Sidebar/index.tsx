@@ -7,6 +7,7 @@ import { routes } from "@/utils";
 
 import DottedSeparator from "../../DottedSeparator";
 import Navigation from "../Navigation";
+import Projects from "../Projects";
 
 const Sidebar = () => {
   return (
@@ -28,6 +29,10 @@ const Sidebar = () => {
       <DottedSeparator className="my-4" />
 
       <Navigation />
+
+      <DottedSeparator className="my-4" />
+
+      <Projects />
     </aside>
   );
 };

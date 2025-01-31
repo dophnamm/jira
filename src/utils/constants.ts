@@ -5,4 +5,5 @@ export const mappingRoute = {
 
 export const params = {
   createWorkspace: "create-workspace",
+  createProject: "create-project",
 };
