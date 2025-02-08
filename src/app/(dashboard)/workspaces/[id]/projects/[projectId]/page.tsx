@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PencilIcon } from "lucide-react";
-import Link from "next/link";
 import urlcat from "urlcat";
 
 import { getCurrentUser } from "@/features/auth/actions";

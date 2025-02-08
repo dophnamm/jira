@@ -1,9 +1,12 @@
+import { Models } from "node-appwrite";
+
+import { IProject } from "@/models";
+
+import { DATABASE_ID, PROJECTS_ID } from "@/config";
+
 import { createSessionClient } from "@/lib/appwrite";
 
 import { getMember } from "../members/utils/functions";
-import { Models } from "node-appwrite";
-import { DATABASE_ID, PROJECTS_ID } from "@/config";
-import { IProject } from "@/models";
 
 export const getProject = async (id: string) => {
   const { account, databases } = await createSessionClient();
