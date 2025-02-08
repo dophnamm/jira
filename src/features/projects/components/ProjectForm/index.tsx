@@ -4,7 +4,7 @@ import { ImageIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { IoClose } from "react-icons/io5";
 
-import { TCreateProjectSchema } from "@/models";
+import { TCreateProjectSchema, TUpdateProjectSchema } from "@/models";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,10 +22,10 @@ import Spinner from "@/components/Spinner";
 import DottedSeparator from "@/components/DottedSeparator";
 
 interface IProps {
-  formInstance: UseFormReturn<TCreateProjectSchema>;
+  formInstance: UseFormReturn<TCreateProjectSchema | TUpdateProjectSchema>;
   isPending: boolean;
   isEdit?: boolean;
-  onSubmit: (value: TCreateProjectSchema) => void;
+  onSubmit: (value: TCreateProjectSchema | TUpdateProjectSchema) => void;
   onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onCancel?: () => void;
 }

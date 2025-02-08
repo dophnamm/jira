@@ -9,6 +9,7 @@ import {
   IMember,
   IWorkspace,
   JoinWorkspaceSchema,
+  TUpdateWorkspacesSchema,
   UpdateWorkspaceSchema,
 } from "@/models";
 
@@ -134,15 +135,15 @@ const app = new Hono()
 
       const uploadedImageUrl = await getImage({ storage, image });
 
-      const workspace = await databases.updateDocument(
+      const workspace = (await databases.updateDocument(
         DATABASE_ID,
         WORKSPACES_ID,
         id,
         {
           name,
           imageUrl: uploadedImageUrl,
-        } as IWorkspace
-      );
+        } as TUpdateWorkspacesSchema
+      )) as Models.Document & IWorkspace;
 
       return c.json(workspace);
     }

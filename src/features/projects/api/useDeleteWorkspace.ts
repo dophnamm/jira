@@ -2,46 +2,47 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { InferRequestType, InferResponseType } from "hono";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import urlcat from "urlcat";
 
 import { client } from "@/lib/rpc";
 
 import { routes } from "@/utils";
 
-import { QUERY_WORKSPACE_KEY, QUERY_WORKSPACES_KEY } from "./useGetWorkspaces";
+import { QUERY_PROJECTS_KEY, QUERY_PROJECT_KEY } from "./useGetProjects";
 
 type TResponseType = InferResponseType<
-  (typeof client.api.workspaces)[":id"]["$delete"],
+  (typeof client.api.projects)[":id"]["$delete"],
   200
 >;
 type TRequestType = InferRequestType<
-  (typeof client.api.workspaces)[":id"]["$delete"]
+  (typeof client.api.projects)[":id"]["$delete"]
 >;
 
-export const useDeleteWorkspace = () => {
+export const useDeleteProject = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
   const mutation = useMutation<TResponseType, Error, TRequestType>({
     mutationFn: async ({ param }) => {
-      const response = await client.api.workspaces[":id"]["$delete"]({ param });
+      const response = await client.api.projects[":id"]["$delete"]({ param });
 
       if (!response.ok) {
-        throw new Error("Failed to delete workspace!");
+        throw new Error("Failed to delete project!");
       }
 
       return await response.json();
     },
-    onSuccess: (workspace) => {
-      toast.success("Workspace delete successfully!");
-      queryClient.invalidateQueries({ queryKey: [QUERY_WORKSPACES_KEY] });
+    onSuccess: (project) => {
+      toast.success("Project delete successfully!");
+      queryClient.invalidateQueries({ queryKey: [QUERY_PROJECTS_KEY] });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_WORKSPACE_KEY, workspace.$id],
+        queryKey: [QUERY_PROJECT_KEY, project.$id],
       });
-      router.push(routes.home);
-      router.refresh();
+
+      router.push(urlcat(routes.workspaceDetail, { id: project.workspaceId }));
     },
     onError: () => {
-      toast.error("Failed to delete workspace!");
+      toast.error("Failed to delete project!");
     },
   });
 

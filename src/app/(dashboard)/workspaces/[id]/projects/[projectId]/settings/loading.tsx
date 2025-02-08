@@ -1,7 +1,7 @@
 import Loading from "@/components/common/Loading";
 
-const DashboardLoading = () => {
+const LoadingPage = () => {
   return <Loading />;
 };
 
-export default DashboardLoading;
+export default LoadingPage;

@@ -20,3 +20,15 @@ export const CreateProjectSchema = z.object({
 });
 
 export type TCreateProjectSchema = z.infer<typeof CreateProjectSchema>;
+
+export const UpdateProjectSchema = z.object({
+  name: z.string().trim().min(1, "Invalid name").optional(),
+  image: z
+    .union([
+      z.instanceof(File),
+      z.string().transform((value) => (value === "" ? undefined : value)),
+    ])
+    .optional(),
+});
+
+export type TUpdateProjectSchema = z.infer<typeof UpdateProjectSchema>;

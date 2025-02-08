@@ -92,8 +92,7 @@ const UpdateWorkspaceForm = (props: IProps) => {
       { form, param: { id: workspaceId } },
       {
         onSuccess: (workspace) => {
-          formInstance.reset();
-          router.push(urlcat(routes.workspaceDetail, { id: workspace.$id }));
+          formInstance.reset(workspace);
         },
       }
     );
@@ -110,14 +109,7 @@ const UpdateWorkspaceForm = (props: IProps) => {
 
     if (!ok) return;
 
-    deleteWorkspace(
-      { param: { id: workspaceId } },
-      {
-        onSuccess: () => {
-          window.location.href = routes.home;
-        },
-      }
-    );
+    deleteWorkspace({ param: { id: workspaceId } });
   };
 
   const handleCopyInviteLink = () => {
@@ -127,14 +119,7 @@ const UpdateWorkspaceForm = (props: IProps) => {
   };
 
   const handleOnResetInviteCode = () => {
-    resetInviteCode(
-      { param: { id: workspaceId } },
-      {
-        onSuccess: () => {
-          router.refresh();
-        },
-      }
-    );
+    resetInviteCode({ param: { id: workspaceId } });
   };
 
   return (

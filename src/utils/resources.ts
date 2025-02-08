@@ -19,6 +19,7 @@ export const WORKSPACES_JOIN = "/workspaces/:id/join";
 
 // Projects
 export const PROJECTS_API = "/projects";
+export const PROJECTS_DETAIL_API = "/projects/:id";
 
 export const routes = {
   home: "/",
@@ -31,4 +32,6 @@ export const routes = {
   workspaceDetail: "/workspaces/:id",
   workspaceInviteCode: "/workspaces/:id/join/:inviteCode",
   projectDetail: "/workspaces/:workspaceId/projects/:projectId",
+  projectDetailSettings:
+    "/workspaces/:workspaceId/projects/:projectId/settings",
 };

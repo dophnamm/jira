@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import urlcat from "urlcat";
 
@@ -20,4 +21,12 @@ const Home = async () => {
   }
 };
 
-export default Home;
+const HomeWrapper = () => {
+  return (
+    <Suspense>
+      <Home />
+    </Suspense>
+  );
+};
+
+export default HomeWrapper;

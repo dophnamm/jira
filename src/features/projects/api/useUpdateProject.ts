@@ -1,48 +1,49 @@
 import { toast } from "sonner";
-import { InferRequestType, InferResponseType } from "hono";
+import { InferResponseType, InferRequestType } from "hono";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { client } from "@/lib/rpc";
 
-import { QUERY_WORKSPACES_KEY } from "./useGetWorkspaces";
-import { QUERY_WORKSPACE_KEY } from "./useGetWorkspace";
+import { QUERY_PROJECTS_KEY, QUERY_PROJECT_KEY } from "./useGetProjects";
 
 type TResponseType = InferResponseType<
-  (typeof client.api.workspaces)[":id"]["$patch"],
+  (typeof client.api.projects)[":id"]["$patch"],
   200
 >;
 type TRequestType = InferRequestType<
-  (typeof client.api.workspaces)[":id"]["$patch"]
+  (typeof client.api.projects)[":id"]["$patch"]
 >;
 
-export const useUpdateWorkspace = () => {
+export const useUpdateProject = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
   const mutation = useMutation<TResponseType, Error, TRequestType>({
     mutationFn: async ({ form, param }) => {
-      const response = await client.api.workspaces[":id"]["$patch"]({
+      const response = await client.api.projects[":id"]["$patch"]({
         form,
         param,
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update workspace!");
+        throw new Error("Failed to update project!");
       }
 
       return await response.json();
     },
-    onSuccess: (workspace) => {
-      toast.success("Workspace update successfully!");
+    onSuccess: (project) => {
+      toast.success("Project update successfully!");
       router.refresh();
-      queryClient.invalidateQueries({ queryKey: [QUERY_WORKSPACES_KEY] });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_WORKSPACE_KEY, workspace.$id],
+        queryKey: [QUERY_PROJECTS_KEY, project.workspaceId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_PROJECT_KEY, project.$id],
       });
     },
     onError: () => {
-      toast.error("Failed to update workspace!");
+      toast.error("Failed to update project!");
     },
   });
 

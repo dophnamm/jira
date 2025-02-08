@@ -12,6 +12,7 @@ const makeQueryClient = () => {
     defaultOptions: {
       queries: {
         staleTime: Infinity,
+        retry: false,
       },
     },
   });

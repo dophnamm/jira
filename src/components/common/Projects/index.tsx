@@ -41,7 +41,7 @@ const Projects = () => {
               workspaceId,
               projectId: project.$id,
             });
-            const isActive = pathname === projectUrl;
+            const isActive = pathname.split("/")[4] === project.$id;
 
             return (
               <Link href={projectUrl} key={project.$id}>

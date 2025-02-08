@@ -144,12 +144,22 @@ const SignUpCard = () => {
       </div>
 
       <CardContent className="p-7 flex flex-col gap-y-4">
-        <Button disabled={false} variant="outline" size="lg" className="w-full">
+        <Button
+          disabled={isPending}
+          variant="outline"
+          size="lg"
+          className="w-full"
+        >
           <FcGoogle className="!size-5" />
           Login with Google
         </Button>
 
-        <Button disabled={false} variant="outline" size="lg" className="w-full">
+        <Button
+          disabled={isPending}
+          variant="outline"
+          size="lg"
+          className="w-full"
+        >
           <FaGithub className="!size-5" />
           Login with Github
         </Button>
