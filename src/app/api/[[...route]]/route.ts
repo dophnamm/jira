@@ -14,7 +14,8 @@ app.get("/health-check", (c) => {
   return c.json({ messages: "Ok" });
 });
 
-export const routes = app
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const routes = app
   .route("", auth)
   .route("", workspaces)
   .route("", members)

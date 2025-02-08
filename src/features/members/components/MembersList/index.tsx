@@ -59,14 +59,7 @@ const MembersList = () => {
 
     if (!ok) return;
 
-    deleteMember(
-      { param: { id } },
-      {
-        onSuccess: () => {
-          router.refresh();
-        },
-      }
-    );
+    deleteMember({ param: { id } });
   };
 
   const isLoading = isDeletingMember || isUpdatingMember;

@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import urlcat from "urlcat";
 
 import { IWorkspaceInfo } from "@/models";
 
@@ -31,21 +29,13 @@ interface IProps {
 const JoinWorkspaceForm = (props: IProps) => {
   const { initialValues, id, inviteCode } = props;
 
-  const router = useRouter();
   const { mutate, isPending } = useJoinWorkspace();
 
   const handleOnJoin = () => {
-    mutate(
-      {
-        param: { id },
-        json: { inviteCode },
-      },
-      {
-        onSuccess: (workspace) => {
-          router.push(urlcat(routes.workspaceDetail, { id: workspace.$id }));
-        },
-      }
-    );
+    mutate({
+      param: { id },
+      json: { inviteCode },
+    });
   };
 
   return (
@@ -65,7 +55,7 @@ const JoinWorkspaceForm = (props: IProps) => {
 
       <CardContent className="p-7">
         <div className="flex items-center justify-end gap-4">
-          <Button variant="outline" type="button">
+          <Button variant="outline" type="button" disabled={isPending}>
             <Link href={routes.home}>Cancel</Link>
           </Button>
 

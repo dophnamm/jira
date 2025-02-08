@@ -6,6 +6,7 @@ export const QUERY_WORKSPACE_KEY = "queryWorkspaceKey";
 
 export const useGetWorkspace = (id: string) => {
   const query = useQuery({
+    enabled: !!id,
     queryKey: [QUERY_WORKSPACE_KEY, id],
     queryFn: async () => {
       const response = await client.api.workspaces[":id"]["$get"]({

@@ -5,8 +5,6 @@ import { InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
 
-import { QUERY_CURRENT_USER_KEY } from "./useCurrentUser";
-
 type TResponseType = InferResponseType<(typeof client.api.logout)["$post"]>;
 
 export const useLogout = () => {
@@ -26,7 +24,7 @@ export const useLogout = () => {
     onSuccess: () => {
       toast.success("Logout successfully!");
       router.refresh();
-      queryClient.invalidateQueries({ queryKey: [QUERY_CURRENT_USER_KEY] });
+      queryClient.clear();
     },
     onError: () => {
       toast.error("Failed to logout!");

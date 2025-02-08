@@ -2,13 +2,20 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { ID, Models, Query } from "node-appwrite";
 
-import { CreateProjectSchema, IProject, QueryProjects } from "@/models";
+import {
+  CreateProjectSchema,
+  UpdateProjectSchema,
+  TCreateProjectSchema,
+  TUpdateProjectSchema,
+  IProject,
+  QueryProjects,
+} from "@/models";
 
 import { sessionMiddleware } from "@/middleware/session";
 
 import { getMember } from "@/features/members/utils/functions";
 
-import { getImage, PROJECTS_API } from "@/utils";
+import { getImage, PROJECTS_API, PROJECTS_DETAIL_API } from "@/utils";
 
 import { DATABASE_ID, PROJECTS_ID } from "@/config";
 
@@ -77,11 +84,82 @@ const app = new Hono()
           name,
           workspaceId,
           imageUrl: uploadedImageUrl,
-        } as IProject
+        } as TCreateProjectSchema
       )) as Models.Document & IProject;
 
       return c.json(project);
     }
-  );
+  )
+  .patch(
+    PROJECTS_DETAIL_API,
+    sessionMiddleware,
+    zValidator("form", UpdateProjectSchema),
+    async (c) => {
+      const databases = c.get("databases");
+      const storage = c.get("storage");
+      const user = c.get("user");
+
+      const { id } = c.req.param();
+      const { name, image } = c.req.valid("form");
+
+      const existingProject = (await databases.getDocument(
+        DATABASE_ID,
+        PROJECTS_ID,
+        id
+      )) as Models.Document & IProject;
+
+      const member = await getMember({
+        databases,
+        workspaceId: existingProject.workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const uploadedImageUrl = await getImage({ storage, image });
+
+      const project = (await databases.updateDocument(
+        DATABASE_ID,
+        PROJECTS_ID,
+        id,
+        {
+          name,
+          imageUrl: uploadedImageUrl,
+        } as TUpdateProjectSchema
+      )) as Models.Document & IProject;
+
+      return c.json(project);
+    }
+  )
+  .delete(PROJECTS_DETAIL_API, sessionMiddleware, async (c) => {
+    const databases = c.get("databases");
+    const user = c.get("user");
+
+    const { id } = c.req.param();
+
+    const existingProject = (await databases.getDocument(
+      DATABASE_ID,
+      PROJECTS_ID,
+      id
+    )) as Models.Document & IProject;
+
+    const member = await getMember({
+      databases,
+      workspaceId: existingProject.workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    // TODO: delete tasks
+
+    await databases.deleteDocument(DATABASE_ID, PROJECTS_ID, id);
+
+    return c.json({ $id: id, workspaceId: existingProject.workspaceId });
+  });
 
 export default app;
