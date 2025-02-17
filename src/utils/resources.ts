@@ -21,6 +21,9 @@ export const WORKSPACES_JOIN = "/workspaces/:id/join";
 export const PROJECTS_API = "/projects";
 export const PROJECTS_DETAIL_API = "/projects/:id";
 
+// Tasks
+export const TASKS_API = "/tasks";
+
 export const routes = {
   home: "/",
   signIn: "/sign-in",

@@ -5,6 +5,7 @@ import urlcat from "urlcat";
 
 import { getCurrentUser } from "@/features/auth/actions";
 import { getProject } from "@/features/projects/actions";
+import TaskSwitcher from "@/features/tasks/components/TaskSwitcher";
 
 import Avatar from "@/components/Avatar";
 
@@ -54,6 +55,8 @@ const ProjectDetail = async (props: IProps) => {
           </Button>
         </div>
       </div>
+
+      <TaskSwitcher />
     </div>
   );
 };
