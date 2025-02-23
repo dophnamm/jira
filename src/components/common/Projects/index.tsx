@@ -19,7 +19,7 @@ import { routes } from "@/utils";
 const Projects = () => {
   const pathname = usePathname();
   const workspaceId = useWorkspaceId();
-  const { data, isLoading } = useGetProjects(workspaceId);
+  const { data, isLoading } = useGetProjects({ workspaceId });
 
   const { onOpen } = useCreateProjectModal();
 
