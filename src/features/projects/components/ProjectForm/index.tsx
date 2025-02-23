@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
@@ -51,11 +51,7 @@ const ProjectForm = (props: IProps) => {
               return (
                 <FormItem hidden>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="Enter project name"
-                    />
+                    <Input {...field} disabled={isPending} />
                   </FormControl>
                 </FormItem>
               );

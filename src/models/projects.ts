@@ -29,6 +29,7 @@ export const UpdateProjectSchema = z.object({
       z.string().transform((value) => (value === "" ? undefined : value)),
     ])
     .optional(),
+  workspaceId: z.string(),
 });
 
 export type TUpdateProjectSchema = z.infer<typeof UpdateProjectSchema>;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -80,9 +81,9 @@ const CreateProjectForm = (props: IProps) => {
 
       <CardContent className="p-7">
         <ProjectForm
-          formInstance={formInstance}
+          formInstance={formInstance as any}
           isPending={isPending}
-          onSubmit={handleOnSubmit}
+          onSubmit={handleOnSubmit as any}
           onImageChange={handleImageChange}
           onCancel={onCancel}
         />
