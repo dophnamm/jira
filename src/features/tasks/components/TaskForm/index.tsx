@@ -107,7 +107,11 @@ const TaskForm = (props: IProps) => {
                   <FormLabel>Due Date</FormLabel>
 
                   <FormControl>
-                    <DatePicker {...field} placeholder="Select date" />
+                    <DatePicker
+                      {...field}
+                      placeholder="Select date"
+                      disabled={isPending}
+                    />
                   </FormControl>
 
                   <FormMessage />
@@ -127,6 +131,7 @@ const TaskForm = (props: IProps) => {
                   <Select
                     defaultValue={field.value}
                     onValueChange={field.onChange}
+                    disabled={isPending}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -166,6 +171,7 @@ const TaskForm = (props: IProps) => {
                   <Select
                     defaultValue={field.value}
                     onValueChange={field.onChange}
+                    disabled={isPending}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -203,6 +209,7 @@ const TaskForm = (props: IProps) => {
                   <Select
                     defaultValue={field.value}
                     onValueChange={field.onChange}
+                    disabled={isPending}
                   >
                     <FormControl>
                       <SelectTrigger>
