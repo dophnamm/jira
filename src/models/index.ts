@@ -14,3 +14,8 @@ export interface IMemberOptions {
   id: string;
   name: string;
 }
+
+export interface ISelectOptions {
+  value: string;
+  label: string;
+}

@@ -1,9 +1,11 @@
 "use client";
 
-import { format } from "date-fns";
+import { useState } from "react";
+import dayjs from "dayjs";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -13,13 +15,20 @@ interface IProps {
   onChange: (date?: Date) => void;
   className?: string;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 const DatePicker = (props: IProps) => {
-  const { value, onChange, className, placeholder } = props;
+  const { value, onChange, className, placeholder, disabled } = props;
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const toggle = () => {
+    setOpen((prev) => !prev);
+  };
 
   return (
-    <Popover>
+    <Popover open={open}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -29,17 +38,27 @@ const DatePicker = (props: IProps) => {
             !value && "text-muted-foreground",
             className
           )}
+          onClick={toggle}
+          disabled={disabled}
         >
           <CalendarIcon className="h-4 w-4" />
-          {value ? format(value, "PPP") : <span>{placeholder}</span>}
+          {value ? (
+            dayjs(value).format("DD/MM/YYYY")
+          ) : (
+            <span>{placeholder}</span>
+          )}
         </Button>
       </PopoverTrigger>
 
       <PopoverContent className="w-auto p-0">
         <Calendar
+          disabled={disabled}
           mode="single"
           selected={value}
-          onSelect={(date) => onChange(date)}
+          onSelect={(date) => {
+            onChange(date);
+            toggle();
+          }}
           initialFocus
         />
       </PopoverContent>

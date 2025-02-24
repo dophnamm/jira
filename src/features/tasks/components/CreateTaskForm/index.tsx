@@ -18,7 +18,8 @@ import { Card, CardTitle, CardContent, CardHeader } from "@/components/ui/card";
 import DottedSeparator from "@/components/DottedSeparator";
 
 import TaskForm from "../TaskForm";
-import { useCreateTask } from "../api/useCreateTask";
+
+import { useCreateTask } from "../../api/useCreateTask";
 
 interface IProps {
   projectOptions: IProjectOptions[];
