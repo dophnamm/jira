@@ -1,4 +1,7 @@
+import { ChangeEvent } from "react";
 import { FolderIcon, ListChecksIcon, UserIcon } from "lucide-react";
+import isBoolean from "lodash/isBoolean";
+import debounce from "lodash/debounce";
 
 import { ETaskStatus, ISelectOptions } from "@/models";
 
@@ -14,11 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 import Spinner from "@/components/Spinner";
 import DatePicker from "@/components/DatePicker";
 
-import { StatusMapping } from "@/utils";
+import { statusMapping } from "@/utils";
 
 import { useTaskFilter } from "../../hooks/useTaskFilter";
 
@@ -58,22 +62,28 @@ const TaskFilter = (props: IProps) => {
       };
     }) ?? [];
 
+  const handleOnSearch = debounce((event: ChangeEvent<HTMLInputElement>) => {
+    setFilter({
+      search: event.target.value,
+    });
+  }, 300);
+
   const handleOnStatusChange = (value: string) => {
     setFilter({
-      status: value === ALL_VALUE ? undefined : (value as ETaskStatus),
+      status: value === ALL_VALUE ? null : (value as ETaskStatus),
     });
   };
 
   const handleOnProjectChange = (value: string) => {
-    setFilter({ projectId: value === ALL_VALUE ? undefined : value });
+    setFilter({ projectId: value === ALL_VALUE ? null : value });
   };
 
   const handleOnMemberChange = (value: string) => {
-    setFilter({ assigneeId: value === ALL_VALUE ? undefined : value });
+    setFilter({ assigneeId: value === ALL_VALUE ? null : value });
   };
 
   const handleOnDueDateChange = (value?: Date) => {
-    setFilter({ dueDate: value ? value.toISOString() : undefined });
+    setFilter({ dueDate: value ? value.toISOString() : null });
   };
 
   const isLoading = isLoadingProjects || isLoadingMembers;
@@ -87,6 +97,13 @@ const TaskFilter = (props: IProps) => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-2">
+      <Input
+        placeholder="Search"
+        className="w-fit h-8"
+        defaultValue={search ?? ""}
+        onChange={handleOnSearch}
+      />
+
       <Select
         defaultValue={status ?? undefined}
         onValueChange={handleOnStatusChange}
@@ -108,7 +125,7 @@ const TaskFilter = (props: IProps) => {
             return (
               <SelectItem key={status} value={status}>
                 <div className="flex items-center gap-x-2">
-                  {StatusMapping[status]}
+                  {statusMapping[status]}
                 </div>
               </SelectItem>
             );
@@ -173,7 +190,7 @@ const TaskFilter = (props: IProps) => {
       <DatePicker
         placeholder="Due Date"
         className="h-8 w-full lg:w-auto"
-        value={dueDate ? new Date(dueDate) : undefined}
+        value={isBoolean(dueDate) ? new Date(dueDate) : undefined}
         onChange={handleOnDueDateChange}
       />
     </div>

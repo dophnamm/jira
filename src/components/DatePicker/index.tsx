@@ -6,6 +6,8 @@ import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+import { dateFormat } from "@/utils";
+
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -43,7 +45,7 @@ const DatePicker = (props: IProps) => {
         >
           <CalendarIcon className="h-4 w-4" />
           {value ? (
-            dayjs(value).format("DD/MM/YYYY")
+            dayjs(value).format(dateFormat.common)
           ) : (
             <span>{placeholder}</span>
           )}

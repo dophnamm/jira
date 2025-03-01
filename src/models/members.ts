@@ -9,6 +9,8 @@ export interface IMember {
   userId: string;
   workspaceId: string;
   role: EMemberRole;
+  name: string;
+  email: string;
 }
 
 export const QueryMembers = z.object({ workspaceId: z.string() });
