@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+import { IProject } from "./projects";
+import { IMember } from "./members";
+
 export enum ETaskStatus {
   BACKLOG = "BACKLOG",
   TODO = "TODO",
@@ -30,12 +33,15 @@ export const QueryTasks = z.object({
 });
 
 export interface ITask {
+  $id: string;
   name: string;
   status: ETaskStatus;
   workspaceId: string;
   projectId: string;
   assigneeId: string;
-  dueDate: Date;
+  dueDate: Date | string;
   description?: string;
   priority: number;
+  project?: IProject;
+  assignee?: IMember;
 }

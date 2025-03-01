@@ -12,10 +12,14 @@ export const params = {
   tabView: "tab-view",
 };
 
-export const StatusMapping: { [key in ETaskStatus]: string } = {
+export const statusMapping: { [key in ETaskStatus]: string } = {
   BACKLOG: "Backlog",
   DONE: "Done",
   IN_PROGRESS: "In Progress",
   IN_REVIEW: "In Review",
   TODO: "Todo",
+};
+
+export const dateFormat = {
+  common: "DD/MM/YYYY",
 };

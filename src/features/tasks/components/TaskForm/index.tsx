@@ -31,7 +31,7 @@ import DottedSeparator from "@/components/DottedSeparator";
 import DatePicker from "@/components/DatePicker";
 import Avatar from "@/components/Avatar";
 
-import { StatusMapping } from "@/utils";
+import { statusMapping } from "@/utils";
 
 interface IProps {
   formInstance: UseFormReturn<TCreateTaskSchema>;
@@ -186,7 +186,7 @@ const TaskForm = (props: IProps) => {
                         return (
                           <SelectItem key={status} value={status}>
                             <div className="flex items-center gap-x-2">
-                              {StatusMapping[status]}
+                              {statusMapping[status]}
                             </div>
                           </SelectItem>
                         );
