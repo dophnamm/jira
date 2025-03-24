@@ -3,6 +3,7 @@ import Sidebar from "@/components/common/Sidebar";
 
 import CreateProjectModal from "@/features/projects/components/CreateProjectModal";
 import CreateTaskModal from "@/features/tasks/components/CreateTaskModal";
+import UpdateTaskModal from "@/features/tasks/components/UpdateTaskModal";
 import CreateWorkspaceModal from "@/features/workspaces/components/CreateWorkspaceModal";
 
 interface IProps {
@@ -16,6 +17,7 @@ const DashboardLayout = (props: IProps) => {
       <CreateWorkspaceModal />
       <CreateProjectModal />
       <CreateTaskModal />
+      <UpdateTaskModal />
 
       <div className="flex w-full h-full">
         <div className="fixed left-0 top-0 hidden lg:block lg:w-[264px] h-full overflow-y-auto">

@@ -77,9 +77,10 @@ export const columns: ColumnDef<ITask>[] = [
     cell: ({ row }) => {
       const id = row.original.$id;
       const projectId = row.original.projectId;
+      const workspaceId = row.original.workspaceId;
 
       return (
-        <TaskActions id={id} projectId={projectId}>
+        <TaskActions id={id} projectId={projectId} workspaceId={workspaceId}>
           <Button variant="ghost" className="size-8 p-0">
             <MoreVertical className="size-4" />
           </Button>

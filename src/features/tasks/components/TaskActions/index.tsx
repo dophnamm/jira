@@ -1,4 +1,7 @@
 import React from "react";
+import { ExternalLinkIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import urlcat from "urlcat";
 
 import {
   DropdownMenu,
@@ -6,25 +9,76 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ExternalLinkIcon, PencilIcon, TrashIcon } from "lucide-react";
+
+import Spinner from "@/components/Spinner";
+
+import { useConfirmModal } from "@/hooks/useConfirmModal";
+
+import { useDeleteTask } from "../../api/useDeleteTask";
+import { routes } from "@/utils";
+import { useUpdateTaskModal } from "../../hooks/useUpdateTaskModal";
 
 interface IProps {
   id: string;
   projectId: string;
+  workspaceId: string;
   children: React.ReactNode;
 }
 
 const TaskActions = (props: IProps) => {
-  const { id, projectId, children } = props;
+  const { id, projectId, workspaceId, children } = props;
+
+  const router = useRouter();
+
+  const { setTaskId } = useUpdateTaskModal();
+  const { mutate: deleteTask, isPending: isPendingDelete } = useDeleteTask();
+
+  const [contextModal, onConfirm] = useConfirmModal({
+    title: "Delete task?",
+    message: "This action cannot be undone.",
+    variant: "destructive",
+  });
+
+  const handleOpenProject = () => {
+    const url = urlcat(routes.projectDetail, { workspaceId, projectId });
+
+    router.push(url);
+  };
+
+  const handleOpenTaskDetail = () => {
+    const url = urlcat(routes.taskDetail, { workspaceId, id });
+
+    router.push(url);
+  };
+
+  const handleEditTask = () => {
+    setTaskId(id);
+  };
+
+  const handleOnConfirmDelete = async () => {
+    const ok = await onConfirm();
+
+    if (!ok) return;
+
+    deleteTask({
+      param: { id },
+    });
+  };
+
+  const isPending = isPendingDelete;
 
   return (
     <div className="flex justify-end">
+      {contextModal}
+
       <DropdownMenu modal={false}>
-        <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+        <DropdownMenuTrigger disabled={isPendingDelete} asChild>
+          {!isPending ? children : <Spinner className="size-5" />}
+        </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem
-            onClick={() => {}}
+            onClick={handleOpenProject}
             disabled={false}
             className="font-medium p-[10px]"
           >
@@ -33,7 +87,7 @@ const TaskActions = (props: IProps) => {
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            onClick={() => {}}
+            onClick={handleOpenTaskDetail}
             disabled={false}
             className="font-medium p-[10px]"
           >
@@ -42,7 +96,7 @@ const TaskActions = (props: IProps) => {
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            onClick={() => {}}
+            onClick={handleEditTask}
             disabled={false}
             className="font-medium p-[10px]"
           >
@@ -51,7 +105,7 @@ const TaskActions = (props: IProps) => {
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            onClick={() => {}}
+            onClick={handleOnConfirmDelete}
             disabled={false}
             className="font-medium text-red-500 focus:text-red-500 p-[10px]"
           >
