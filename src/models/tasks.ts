@@ -23,6 +23,8 @@ export const CreateTaskSchema = z.object({
 
 export type TCreateTaskSchema = z.infer<typeof CreateTaskSchema>;
 
+export const UpdateTaskSchema = CreateTaskSchema.partial();
+
 export const QueryTasks = z.object({
   workspaceId: z.string(),
   projectId: z.string().nullish(),

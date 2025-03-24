@@ -63,17 +63,13 @@ export const useConfirmModal = (
         </CardHeader>
 
         <CardContent className="p-7 pt-0 flex gap-2 items-center">
-          <Button
-            variant="outline"
-            className="w-full lg:w-auto"
-            onClick={handleOnCancel}
-          >
+          <Button variant="outline" className="w-full" onClick={handleOnCancel}>
             {textCancel}
           </Button>
 
           <Button
             variant={variant}
-            className="w-full lg:w-auto"
+            className="w-full"
             onClick={handleOnConfirm}
           >
             {textConfirm}

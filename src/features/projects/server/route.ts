@@ -127,6 +127,7 @@ const app = new Hono()
         {
           name,
           imageUrl: uploadedImageUrl,
+          workspaceId: existingProject.workspaceId,
         } as TUpdateProjectSchema
       )) as Models.Document & IProject;
 

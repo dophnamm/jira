@@ -1,3 +1,5 @@
+import isEmpty from "lodash/isEmpty";
+
 import { IMemberOptions, IProjectOptions } from "@/models";
 
 import { useGetMembers } from "@/features/members/api/useGetMembers";
@@ -8,15 +10,23 @@ import Spinner from "@/components/Spinner";
 import { Card, CardContent } from "@/components/ui/card";
 
 import CreateTaskForm from "../CreateTaskForm";
+import UpdateTaskForm from "../UpdateTaskForm";
+
+import { useGetTask } from "../../api/useGetTask";
 
 interface IProps {
+  taskId: string | null;
   onCancel: () => void;
 }
 
 const TaskFormWrapper = (props: IProps) => {
-  const { onCancel } = props;
+  const { taskId, onCancel } = props;
 
   const workspaceId = useWorkspaceId();
+
+  const { data: defaultValues, isLoading: isLoadingTask } = useGetTask({
+    taskId: taskId ?? "",
+  });
 
   const { data: projects, isLoading: isLoadingProjects } = useGetProjects({
     workspaceId,
@@ -42,7 +52,7 @@ const TaskFormWrapper = (props: IProps) => {
       };
     }) ?? [];
 
-  const isLoading = isLoadingProjects || isLoadingMembers;
+  const isLoading = isLoadingProjects || isLoadingMembers || isLoadingTask;
 
   if (isLoading) {
     return (
@@ -51,6 +61,17 @@ const TaskFormWrapper = (props: IProps) => {
           <Spinner className="size-5" />
         </CardContent>
       </Card>
+    );
+  }
+
+  if (!isEmpty(defaultValues)) {
+    return (
+      <UpdateTaskForm
+        defaultValues={defaultValues}
+        projectOptions={projectOps}
+        memberOptions={memberOps}
+        onCancel={onCancel}
+      />
     );
   }
 

@@ -9,6 +9,7 @@ export const params = {
   createWorkspace: "create-workspace",
   createProject: "create-project",
   createTask: "create-task",
+  updateTask: "update-task",
   tabView: "tab-view",
 };
 

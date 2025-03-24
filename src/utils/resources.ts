@@ -23,12 +23,14 @@ export const PROJECTS_DETAIL_API = "/projects/:id";
 
 // Tasks
 export const TASKS_API = "/tasks";
+export const TASKS_DETAIL_API = "tasks/:id";
 
 export const routes = {
   home: "/",
   signIn: "/sign-in",
   signUp: "/sign-up",
   tasks: "/tasks",
+  taskDetail: "/workspaces/:workspaceId/tasks/:id",
   settings: "/settings",
   members: "/members",
   workspaces: "/workspaces",

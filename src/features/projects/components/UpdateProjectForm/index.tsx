@@ -22,7 +22,7 @@ import DottedSeparator from "@/components/DottedSeparator";
 import { useConfirmModal } from "@/hooks/useConfirmModal";
 
 import { useUpdateProject } from "../../api/useUpdateProject";
-import { useDeleteProject } from "../../api/useDeleteWorkspace";
+import { useDeleteProject } from "../../api/useDeleteProject";
 
 import ProjectForm from "../ProjectForm";
 
