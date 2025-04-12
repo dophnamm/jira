@@ -11,7 +11,7 @@ const CreateTaskModal = () => {
   return (
     <ResponsiveModal open={isOpen} onOpenChange={setIsOpen}>
       <div>
-        <TaskFormWrapper onCancel={onClose} />
+        <TaskFormWrapper taskId={null} onCancel={onClose} />
       </div>
     </ResponsiveModal>
   );

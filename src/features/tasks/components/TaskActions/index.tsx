@@ -14,8 +14,9 @@ import Spinner from "@/components/Spinner";
 
 import { useConfirmModal } from "@/hooks/useConfirmModal";
 
-import { useDeleteTask } from "../../api/useDeleteTask";
 import { routes } from "@/utils";
+
+import { useDeleteTask } from "../../api/useDeleteTask";
 import { useUpdateTaskModal } from "../../hooks/useUpdateTaskModal";
 
 interface IProps {

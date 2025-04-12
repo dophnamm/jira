@@ -14,6 +14,7 @@ import DottedSeparator from "@/components/DottedSeparator";
 import { params } from "@/utils";
 
 import DataTable from "../DataTable";
+import DataKanban from "../DataKanban";
 import TaskFilter from "../TaskFilter";
 import { columns } from "../Columns";
 
@@ -40,6 +41,8 @@ const TaskSwitcher = () => {
     search,
     dueDate,
   });
+
+  const data = tasks?.documents ?? [];
 
   return (
     <Tabs
@@ -81,11 +84,11 @@ const TaskSwitcher = () => {
         ) : (
           <>
             <TabsContent value={TABS_KEY.table} className="mt-0">
-              <DataTable columns={columns} data={tasks?.documents ?? []} />
+              <DataTable columns={columns} data={data} />
             </TabsContent>
 
             <TabsContent value={TABS_KEY.kanban} className="mt-0">
-              Data kanban
+              <DataKanban data={data} />
             </TabsContent>
 
             <TabsContent value={TABS_KEY.calendar} className="mt-0">
