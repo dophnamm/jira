@@ -10,9 +10,11 @@ import {
 
 import { ETaskStatus } from "@/models";
 
-import { statusMapping } from "@/utils";
-import { Button } from "@/components/ui/button";
 import { useCreateTaskModal } from "@/features/tasks/hooks/useCreateTaskModal";
+
+import { Button } from "@/components/ui/button";
+
+import { statusMapping } from "@/utils";
 
 const statusIconMap: Record<ETaskStatus, React.ReactNode> = {
   [ETaskStatus.BACKLOG]: (
