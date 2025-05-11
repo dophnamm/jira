@@ -33,7 +33,7 @@ interface IProps {
 }
 
 const TaskFilter = (props: IProps) => {
-  const { hideProject } = props;
+  const {} = props;
 
   const workspaceId = useWorkspaceId();
 

@@ -34,6 +34,18 @@ export const QueryTasks = z.object({
   dueDate: z.string().nullish(),
 });
 
+export const BulkTaskUpdate = z.object({
+  tasks: z.array(
+    z.object({
+      $id: z.string(),
+      status: z.nativeEnum(ETaskStatus),
+      priority: z.number().int().positive().min(0).max(1_000_000),
+    })
+  ),
+});
+
+export type TBulkTaskUpdate = z.infer<typeof BulkTaskUpdate>;
+
 export interface ITask {
   $id: string;
   name: string;

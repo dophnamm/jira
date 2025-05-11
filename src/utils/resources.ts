@@ -23,7 +23,8 @@ export const PROJECTS_DETAIL_API = "/projects/:id";
 
 // Tasks
 export const TASKS_API = "/tasks";
-export const TASKS_DETAIL_API = "tasks/:id";
+export const TASKS_DETAIL_API = "/tasks/:id";
+export const TASKS_BULK_API = "/tasks/bulk-update";
 
 export const routes = {
   home: "/",
