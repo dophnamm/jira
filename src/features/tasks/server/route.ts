@@ -9,6 +9,7 @@ import {
   IMember,
   IProject,
   UpdateTaskSchema,
+  BulkTaskUpdate,
 } from "@/models";
 
 import { sessionMiddleware } from "@/middleware/session";
@@ -17,7 +18,7 @@ import { getMember } from "@/features/members/utils/functions";
 
 import { createAdminClient } from "@/lib/appwrite";
 
-import { TASKS_API, TASKS_DETAIL_API } from "@/utils";
+import { TASKS_API, TASKS_DETAIL_API, TASKS_BULK_API } from "@/utils";
 
 import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
 
@@ -297,6 +298,60 @@ const app = new Hono()
     await databases.deleteDocument(DATABASE_ID, TASKS_ID, id);
 
     return c.json({ $id: id });
-  });
+  })
+  .post(
+    TASKS_BULK_API,
+    sessionMiddleware,
+    zValidator("json", BulkTaskUpdate),
+    async (c) => {
+      const user = c.get("user");
+      const databases = c.get("databases");
+      const { tasks } = await c.req.valid("json");
+
+      const taskToUpdate = (await databases.listDocuments(
+        DATABASE_ID,
+        TASKS_ID,
+        [
+          Query.contains(
+            "$id",
+            tasks.map((task) => task.$id)
+          ),
+        ]
+      )) as Models.DocumentList<Models.Document & ITask>;
+
+      const workspaceIds = new Set(
+        taskToUpdate.documents.map((task) => task.workspaceId)
+      );
+
+      if (workspaceIds.size !== 1) {
+        return c.json({ error: "All tasks must along to the same workspace" });
+      }
+
+      const workspaceId = workspaceIds.values().next().value as string;
+
+      const member = await getMember({
+        databases,
+        workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const updatedTasks = await Promise.all(
+        tasks.map(async (task) => {
+          const { $id, status, priority } = task;
+
+          return databases.updateDocument(DATABASE_ID, TASKS_ID, $id, {
+            status,
+            priority,
+          });
+        })
+      );
+
+      return c.json(updatedTasks);
+    }
+  );
 
 export default app;
