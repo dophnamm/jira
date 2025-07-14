@@ -15,9 +15,10 @@ import DottedSeparator from "@/components/DottedSeparator";
 import { params } from "@/utils";
 
 import DataTable from "../DataTable";
+import DataCalendar from "../DataCalendar";
 import DataKanban, { TTaskDnD } from "../DataKanban";
-import TaskFilter from "../TaskFilter";
 import { columns } from "../Columns";
+import TaskFilter from "../TaskFilter";
 
 import { useGetTasks } from "../../api/useGetTasks";
 import { useBulkUpdateTask } from "../../api/useBulkUpdateTask";
@@ -104,8 +105,11 @@ const TaskSwitcher = () => {
               <DataKanban data={data} onChange={handleKanbanOnChange} />
             </TabsContent>
 
-            <TabsContent value={TABS_KEY.calendar} className="mt-0 h-full">
-              Data calendar
+            <TabsContent
+              value={TABS_KEY.calendar}
+              className="mt-0 h-full overflow-y-scroll"
+            >
+              <DataCalendar data={data} />
             </TabsContent>
           </>
         )}

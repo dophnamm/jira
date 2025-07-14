@@ -23,4 +23,6 @@ export const statusMapping: { [key in ETaskStatus]: string } = {
 
 export const dateFormat = {
   common: "DD/MM/YYYY",
+  monthAndYear: "MMMM YYYY",
+  dayOfWeek: "ddd",
 };
