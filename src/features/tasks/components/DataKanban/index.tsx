@@ -159,16 +159,16 @@ const DataKanban = (props: IProps) => {
   );
 
   return (
-    <div>
+    <div className="h-full overflow-x-auto">
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex overflow-x-auto">
+        <div className="flex overflow-x-auto h-full">
           {boards.map((board) => {
             const count = tasks[board].length;
 
             return (
               <div
                 key={board}
-                className="flex-1 mx-2 bg-muted p-1.5 rounded-md min-w-[200px]"
+                className="flex-1 mx-2 bg-muted p-1.5 rounded-md min-w-[200px] h-full"
               >
                 <ColumnHeader board={board} count={count} />
 
@@ -178,7 +178,7 @@ const DataKanban = (props: IProps) => {
                       <div
                         {...provided.droppableProps}
                         ref={provided.innerRef}
-                        className="min-h-[500px] py-1.5"
+                        className="h-full py-1.5"
                       >
                         {tasks[board].map((task, index) => {
                           return (

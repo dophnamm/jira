@@ -38,7 +38,7 @@ const ProjectDetail = async (props: IProps) => {
   });
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4 h-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-2">
           <Avatar name={project.name} image={project.imageUrl} />

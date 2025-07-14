@@ -89,21 +89,22 @@ const TaskSwitcher = () => {
         <TaskFilter />
 
         <DottedSeparator className="my-4" />
+
         {isLoadingTask ? (
-          <div className="h-[200px] grid place-items-center">
+          <div className="grid place-items-center h-full">
             <Spinner className="size-6" />
           </div>
         ) : (
           <>
-            <TabsContent value={TABS_KEY.table} className="mt-0">
+            <TabsContent value={TABS_KEY.table} className="mt-0 h-full">
               <DataTable columns={columns} data={data} />
             </TabsContent>
 
-            <TabsContent value={TABS_KEY.kanban} className="mt-0">
+            <TabsContent value={TABS_KEY.kanban} className="mt-0 h-full">
               <DataKanban data={data} onChange={handleKanbanOnChange} />
             </TabsContent>
 
-            <TabsContent value={TABS_KEY.calendar} className="mt-0">
+            <TabsContent value={TABS_KEY.calendar} className="mt-0 h-full">
               Data calendar
             </TabsContent>
           </>
