@@ -29,11 +29,11 @@ import { useTaskFilter } from "../../hooks/useTaskFilter";
 const ALL_VALUE = "all";
 
 interface IProps {
-  hideProject?: boolean;
+  hideProjectFilter?: boolean;
 }
 
 const TaskFilter = (props: IProps) => {
-  const {} = props;
+  const { hideProjectFilter } = props;
 
   const workspaceId = useWorkspaceId();
 
@@ -133,32 +133,36 @@ const TaskFilter = (props: IProps) => {
         </SelectContent>
       </Select>
 
-      <Select
-        defaultValue={projectId ?? undefined}
-        onValueChange={handleOnProjectChange}
-      >
-        <SelectTrigger className="w-full lg:w-auto h-8">
-          <div className="flex items-center gap-1 pr-3">
-            <FolderIcon className="size-4" />
+      {!hideProjectFilter && (
+        <Select
+          defaultValue={projectId ?? undefined}
+          onValueChange={handleOnProjectChange}
+        >
+          <SelectTrigger className="w-full lg:w-auto h-8">
+            <div className="flex items-center gap-1 pr-3">
+              <FolderIcon className="size-4" />
 
-            <SelectValue placeholder="All Projects" />
-          </div>
-        </SelectTrigger>
+              <SelectValue placeholder="All Projects" />
+            </div>
+          </SelectTrigger>
 
-        <SelectContent>
-          <SelectItem value={ALL_VALUE}>All Projects</SelectItem>
+          <SelectContent>
+            <SelectItem value={ALL_VALUE}>All Projects</SelectItem>
 
-          <SelectSeparator />
+            <SelectSeparator />
 
-          {projectOps.map((project) => {
-            return (
-              <SelectItem key={project.value} value={project.value}>
-                <div className="flex items-center gap-x-2">{project.label}</div>
-              </SelectItem>
-            );
-          })}
-        </SelectContent>
-      </Select>
+            {projectOps.map((project) => {
+              return (
+                <SelectItem key={project.value} value={project.value}>
+                  <div className="flex items-center gap-x-2">
+                    {project.label}
+                  </div>
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
+      )}
 
       <Select
         defaultValue={assigneeId ?? undefined}

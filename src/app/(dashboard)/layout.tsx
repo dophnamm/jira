@@ -19,7 +19,7 @@ const DashboardLayout = (props: IProps) => {
           <Sidebar />
         </div>
 
-        <div className="lg:pl-[264px] w-full h-full overflow-hidden flex flex-col">
+        <div className="lg:pl-[264px] w-full h-full overflow-auto flex flex-col">
           <div className="mx-auto max-w-screen-2xl w-full h-full flex flex-col">
             <Navbar />
             <main className="py-8 px-6 flex flex-col h-full">{children}</main>

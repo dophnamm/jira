@@ -56,7 +56,7 @@ const ProjectDetail = async (props: IProps) => {
         </div>
       </div>
 
-      <TaskSwitcher />
+      <TaskSwitcher hideProjectFilter />
     </div>
   );
 };

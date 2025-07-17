@@ -15,9 +15,10 @@ import DottedSeparator from "@/components/DottedSeparator";
 import { params } from "@/utils";
 
 import DataTable from "../DataTable";
+import DataCalendar from "../DataCalendar";
 import DataKanban, { TTaskDnD } from "../DataKanban";
-import TaskFilter from "../TaskFilter";
 import { columns } from "../Columns";
+import TaskFilter from "../TaskFilter";
 
 import { useGetTasks } from "../../api/useGetTasks";
 import { useBulkUpdateTask } from "../../api/useBulkUpdateTask";
@@ -27,7 +28,13 @@ import { useCreateTaskModal } from "../../hooks/useCreateTaskModal";
 
 import { TABS_KEY } from "../../utils/constants";
 
-const TaskSwitcher = () => {
+interface IProps {
+  hideProjectFilter?: boolean;
+}
+
+const TaskSwitcher = (props: IProps) => {
+  const { hideProjectFilter } = props;
+
   const [tabKey, setTabKey] = useQueryState(params.tabView, {
     defaultValue: TABS_KEY.table,
   });
@@ -86,7 +93,7 @@ const TaskSwitcher = () => {
 
         <DottedSeparator className="my-4" />
 
-        <TaskFilter />
+        <TaskFilter hideProjectFilter={hideProjectFilter} />
 
         <DottedSeparator className="my-4" />
 
@@ -104,8 +111,11 @@ const TaskSwitcher = () => {
               <DataKanban data={data} onChange={handleKanbanOnChange} />
             </TabsContent>
 
-            <TabsContent value={TABS_KEY.calendar} className="mt-0 h-full">
-              Data calendar
+            <TabsContent
+              value={TABS_KEY.calendar}
+              className="mt-0 h-full overflow-y-scroll"
+            >
+              <DataCalendar data={data} />
             </TabsContent>
           </>
         )}

@@ -36,6 +36,7 @@ export const routes = {
   members: "/members",
   workspaces: "/workspaces",
   workspaceDetail: "/workspaces/:id",
+  workspaceTasks: "/workspaces/:id/tasks",
   workspaceInviteCode: "/workspaces/:id/join/:inviteCode",
   projectDetail: "/workspaces/:workspaceId/projects/:projectId",
   projectDetailSettings:
