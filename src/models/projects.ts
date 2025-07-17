@@ -3,6 +3,7 @@ import { z } from "zod";
 export const QueryProjects = z.object({ workspaceId: z.string() });
 
 export interface IProject {
+  $id: string;
   workspaceId: string;
   name: string;
   imageUrl: string;

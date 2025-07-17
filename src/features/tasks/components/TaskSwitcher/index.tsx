@@ -28,7 +28,13 @@ import { useCreateTaskModal } from "../../hooks/useCreateTaskModal";
 
 import { TABS_KEY } from "../../utils/constants";
 
-const TaskSwitcher = () => {
+interface IProps {
+  hideProjectFilter?: boolean;
+}
+
+const TaskSwitcher = (props: IProps) => {
+  const { hideProjectFilter } = props;
+
   const [tabKey, setTabKey] = useQueryState(params.tabView, {
     defaultValue: TABS_KEY.table,
   });
@@ -87,7 +93,7 @@ const TaskSwitcher = () => {
 
         <DottedSeparator className="my-4" />
 
-        <TaskFilter />
+        <TaskFilter hideProjectFilter={hideProjectFilter} />
 
         <DottedSeparator className="my-4" />
 
