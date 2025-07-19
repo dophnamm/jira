@@ -59,14 +59,7 @@ const UpdateProjectForm = (props: IProps) => {
       image: values.image instanceof File ? values.image : "",
     };
 
-    updateProject(
-      { form, param: { id: projectId } },
-      {
-        onSuccess: (project) => {
-          formInstance.reset(project);
-        },
-      }
-    );
+    updateProject({ form, param: { id: projectId } });
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/rpc";
 
 export const QUERY_PROJECTS_KEY = "queryProjectsKey";
-export const QUERY_PROJECT_KEY = "queryProjectKey";
 
 interface IProps {
   workspaceId: string;
