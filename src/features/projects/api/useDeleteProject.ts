@@ -8,7 +8,8 @@ import { client } from "@/lib/rpc";
 
 import { routes } from "@/utils";
 
-import { QUERY_PROJECTS_KEY, QUERY_PROJECT_KEY } from "./useGetProjects";
+import { QUERY_PROJECTS_KEY } from "./useGetProjects";
+import { QUERY_PROJECT_KEY } from "./useGetProject";
 
 type TResponseType = InferResponseType<
   (typeof client.api.projects)[":id"]["$delete"],

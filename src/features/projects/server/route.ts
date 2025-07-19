@@ -53,6 +53,30 @@ const app = new Hono()
       return c.json(projects);
     }
   )
+  .get(PROJECTS_DETAIL_API, sessionMiddleware, async (c) => {
+    const databases = c.get("databases");
+    const user = c.get("user");
+
+    const { id } = c.req.param();
+
+    const existingProject = (await databases.getDocument(
+      DATABASE_ID,
+      PROJECTS_ID,
+      id
+    )) as Models.Document & IProject;
+
+    const member = await getMember({
+      databases,
+      workspaceId: existingProject.workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    return c.json(existingProject);
+  })
   .post(
     PROJECTS_API,
     sessionMiddleware,
