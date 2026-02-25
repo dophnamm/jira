@@ -1,4 +1,3 @@
-import React from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 

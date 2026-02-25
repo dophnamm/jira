@@ -1,4 +1,3 @@
-import React from "react";
 import { MoreHorizontalIcon } from "lucide-react";
 
 import { ITask } from "@/models";

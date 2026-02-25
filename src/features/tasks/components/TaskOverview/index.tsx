@@ -1,4 +1,3 @@
-import React from "react";
 import { PencilIcon } from "lucide-react";
 
 import Avatar from "@/components/Avatar";

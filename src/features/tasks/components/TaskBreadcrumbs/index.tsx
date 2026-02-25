@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import urlcat from "urlcat";
 import { useRouter } from "next/navigation";

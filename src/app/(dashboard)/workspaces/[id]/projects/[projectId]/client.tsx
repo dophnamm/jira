@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { PencilIcon } from "lucide-react";
 import urlcat from "urlcat";
