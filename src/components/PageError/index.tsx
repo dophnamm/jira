@@ -1,5 +1,3 @@
-import React from "react";
-
 import { AlertTriangleIcon } from "lucide-react";
 
 interface IProps {

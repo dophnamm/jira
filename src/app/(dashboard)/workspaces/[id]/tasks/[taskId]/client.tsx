@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { useTaskId } from "@/features/tasks/hooks/useTaskId";
 import { useGetTask } from "@/features/tasks/api/useGetTask";
 import TaskOverview from "@/features/tasks/components/TaskOverview";

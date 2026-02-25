@@ -1,4 +1,3 @@
-import React from "react";
 import isEmpty from "lodash/isEmpty";
 
 import { useGetWorkspace } from "@/features/workspaces/api/useGetWorkspace";
